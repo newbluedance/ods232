@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Placard">
+    <sql id="Base_Column_List" >
+        F_PLACARD_ID as placardId ,
+        F_TITLE as title ,
+        F_CONTENT as content ,
+        F_STATE as state ,
+        F_SHOW_PLACE as showPlace ,
+        F_CRT_USER as crtUser ,
+        F_CRT_TIME as crtTime ,
+        F_UPD_USER as updUser ,
+        F_UPD_TIME as updTime
+    </sql>
+
+    <select id="getById" resultType="Placard" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_PLACARD
+        where F_PLACARD_ID = #{placardId}
+    </select>
+
+    <!--resultType="User" 每返回一条结果封装到User里 -->
+    <select id="queryListPage" resultType="Placard" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_PLACARD
+        <where>
+            <if test="t.title != null and t.title != ''">
+                F_TITLE like '%${t.title}%'
+            </if>
+            <if test="t.state != null and t.state != ''">
+                and F_STATE like '%${t.state}%'
+            </if>
+        </where>
+        <if test="paging.sort != null and paging.sort != ''">
+            ORDER BY ${paging.sort}
+        </if>
+        <if test="paging.direction != null and paging.direction != ''">
+            ${paging.direction}
+        </if>
+    </select>
+
+    <select id="queryAll" resultType="Placard" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_PLACARD
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from T_PUB_PLACARD
+        where F_PLACARD_ID = #{placardId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="add" parameterType="Placard" >
+        <selectKey keyProperty="placardId" resultType="String" order="BEFORE">
+            select SEQ_PLACARD.nextval AS placardId from dual
+        </selectKey>
+        insert into T_PUB_PLACARD (
+            F_PLACARD_ID ,
+        	F_TITLE ,
+        	F_CONTENT ,
+        	F_STATE ,
+        	F_SHOW_PLACE ,
+        	F_CRT_USER ,
+        	F_CRT_TIME ,
+        	F_UPD_USER ,
+        	F_UPD_TIME
+        ) VALUES (
+        	#{placardId, jdbcType=VARCHAR},
+        	#{title, jdbcType=VARCHAR},
+        	#{content, jdbcType=VARCHAR},
+        	#{state, jdbcType=VARCHAR},
+        	#{showPlace, jdbcType=VARCHAR},
+        	#{crtUser, jdbcType=VARCHAR},
+        	#{crtTime, jdbcType=VARCHAR},
+        	#{updUser, jdbcType=VARCHAR},
+        	#{updTime, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="update" parameterType="Placard">
+        update T_PUB_PLACARD
+          SET
+            F_TITLE = #{title, jdbcType=VARCHAR},
+	        F_CONTENT = #{content, jdbcType=VARCHAR},
+	        F_STATE = #{state, jdbcType=VARCHAR},
+	        F_SHOW_PLACE = #{showPlace, jdbcType=VARCHAR},
+	        F_CRT_USER = #{crtUser, jdbcType=VARCHAR},
+	        F_CRT_TIME = #{crtTime, jdbcType=VARCHAR},
+	        F_UPD_USER = #{updUser, jdbcType=VARCHAR},
+	        F_UPD_TIME = #{updTime, jdbcType=VARCHAR}
+        WHERE
+	        F_PLACARD_ID = #{placardId}
+    </update>
+
+</mapper>

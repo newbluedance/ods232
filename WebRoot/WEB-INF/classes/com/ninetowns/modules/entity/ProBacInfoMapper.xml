@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ProBacInfo" >
+	<sql id="Base_Column_List" >
+		PROID as proId,
+		HSCODE as hsCode,
+		PRONAME as proName,
+		PROMNAME as promName,
+		CLASSID as classId,
+		MAKER as maker,
+		ADDRESS as address,
+		BRAND as brand,
+		CREATEDATE as createDate,
+		STATE as state,
+		CHECKDATE as checkDate,
+		CHECKCONENT as checkConent,
+		CHECKNAME as checkName,
+		STATEH as stateH,
+		CHECKDATEH as checkDateH,
+		CHECKCONENTH as checkConentH,
+		CHECKNAMEH as checkNameH,
+		STATES as stateS,
+		CHECKDATES as checkDateS,
+		CHECKCONENTS as checkConentS,
+		CHECKNAMES as checkNameS
+	</sql>
+	<select id="getById" resultType="ProBacInfo" parameterType="java.lang.String" >
+		select
+		t1.PROID as proId,
+		t1.HSCODE as hsCode,
+		t1.PRONAME as proName,
+		t1.PROMNAME as promName,
+		t1.CLASSID as classId,
+		t1.MAKER as maker,
+		t1.ADDRESS as address,
+		t1.BRAND as brand,
+		t1.CREATEDATE as createDate,
+		t1.STATE as state,
+		t1.CHECKDATE as checkDate,
+		t1.CHECKCONENT as checkConent,
+		t1.CHECKNAME as checkName,
+		t1.STATEH as stateH,
+		t1.CHECKDATEH as checkDateH,
+		t1.CHECKCONENTH as checkConentH,
+		t1.CHECKNAMEH as checkNameH,
+		t1.STATES as stateS,
+		t1.CHECKDATES as checkDateS,
+		t1.CHECKCONENTS as checkConentS,
+		t1.CHECKNAMES as checkNameS,
+		T2.CLASSNAME as className
+		from
+		ODS_PRO_BAC_INFO t1 LEFT JOIN ODS_PRO_CLASS t2 ON T1.CLASSID=T2.CLASSID
+		where
+		t1.PROID = #{proId,jdbcType=VARCHAR}
+	</select>
+	<select id="queryAll" resultType="ProBacInfo" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_PRO_BAC_INFO
+	</select>
+	<select id="queryByMax" resultType="String" parameterType="String" >
+		select
+			max(t.PROID)
+		from
+		ODS_PRO_BAC_INFO t
+		where
+			
+			substr(t.CREATEDATE,0,7) =  #{createDate,jdbcType=VARCHAR}
+			
+		
+	</select>
+	<select id="queryListPage" resultType="ProBacInfo" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_PRO_BAC_INFO
+		<where>
+			<if test="t.proId!=null and t.proId!=''">
+				PROID like '%${t.proId}%'
+			</if>
+			<if test="t.hsCode!=null and t.hsCode!=''">
+				and HSCODE like '%${t.hsCode}%'
+			</if>
+			<if test="t.proName!=null and t.proName!=''">
+				and PRONAME like '%${t.proName}%'
+			</if>
+			<if test="t.promName!=null and t.promName!=''">
+				and PROMNAME like '%${t.promName}%'
+			</if>
+			<if test="t.classId!=null and t.classId!=''">
+				and CLASSID like '%${t.classId}%'
+			</if>
+			<if test="t.maker!=null and t.maker!=''">
+				and MAKER like '%${t.maker}%'
+			</if>
+			<if test="t.address!=null and t.address!=''">
+				and ADDRESS like '%${t.address}%'
+			</if>
+			<if test="t.brand!=null and t.brand!=''">
+				and BRAND like '%${t.brand}%'
+			</if>
+			<if test="t.createDate!=null and t.createDate!=''">
+				and CREATEDATE like '%${t.createDate}%'
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and STATE like '%${t.state}%'
+			</if>
+			<if test="t.checkDate!=null and t.checkDate!=''">
+				and CHECKDATE like '%${t.checkDate}%'
+			</if>
+			<if test="t.checkConent!=null and t.checkConent!=''">
+				and CHECKCONENT like '%${t.checkConent}%'
+			</if>
+			<if test="t.checkName!=null and t.checkName!=''">
+				and CHECKNAME like '%${t.checkName}%'
+			</if>
+			<if test="t.stateH!=null and t.stateH!=''">
+				and STATEH like '%${t.stateH}%'
+			</if>
+			<if test="t.checkDateH!=null and t.checkDateH!=''">
+				and CHECKDATEH like '%${t.checkDateH}%'
+			</if>
+			<if test="t.checkConentH!=null and t.checkConentH!=''">
+				and CHECKCONENTH like '%${t.checkConentH}%'
+			</if>
+			<if test="t.checkNameH!=null and t.checkNameH!=''">
+				and CHECKNAMEH like '%${t.checkNameH}%'
+			</if>
+			<if test="t.stateS!=null and t.stateS!=''">
+				and STATES like '%${t.stateS}%'
+			</if>
+			<if test="t.checkDateS!=null and t.checkDateS!=''">
+				and CHECKDATES like '%${t.checkDateS}%'
+			</if>
+			<if test="t.checkConentS!=null and t.checkConentS!=''">
+				and CHECKCONENTS like '%${t.checkConentS}%'
+			</if>
+			<if test="t.checkNameS!=null and t.checkNameS!=''">
+				and CHECKNAMES like '%${t.checkNameS}%'
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<select id="queryListPageForDesc" resultType="ProBacInfo" parameterType="java.util.HashMap" >
+		select
+		t1.PROID as proId,
+		t1.HSCODE as hsCode,
+		t1.PRONAME as proName,
+		t1.PROMNAME as promName,
+		t1.CLASSID as classId,
+		t1.MAKER as maker,
+		t1.ADDRESS as address,
+		t1.BRAND as brand,
+		t1.CREATEDATE as createDate,
+		t1.STATE as state,
+		t1.CHECKDATE as checkDate,
+		t1.CHECKCONENT as checkConent,
+		t1.CHECKNAME as checkName,
+		t1.STATEH as stateH,
+		t1.CHECKDATEH as checkDateH,
+		t1.CHECKCONENTH as checkConentH,
+		t1.CHECKNAMEH as checkNameH,
+		t1.STATES as stateS,
+		t1.CHECKDATES as checkDateS,
+		t1.CHECKCONENTS as checkConentS,
+		t1.CHECKNAMES as checkNameS,
+		T2.CLASSNAME as className
+		from
+		ODS_PRO_BAC_INFO t1 LEFT JOIN ODS_PRO_CLASS t2 ON T1.CLASSID=T2.CLASSID
+		<where>
+			<if test="t.proId!=null and t.proId!=''">
+				t1.PROID like '%${t.proId}%'
+			</if>
+			<if test="t.hsCode!=null and t.hsCode!=''">
+				and t1.HSCODE like '%${t.hsCode}%'
+			</if>
+			<if test="t.proName!=null and t.proName!=''">
+				and t1.PRONAME like '%${t.proName}%'
+			</if>
+			<if test="t.promName!=null and t.promName!=''">
+				and t1.PROMNAME like '%${t.promName}%'
+			</if>
+			<if test="t.classId!=null and t.classId!=''">
+				and t1.CLASSID like '%${t.classId}%'
+			</if>
+			<if test="t.maker!=null and t.maker!=''">
+				and t1.MAKER like '%${t.maker}%'
+			</if>
+			<if test="t.address!=null and t.address!=''">
+				and t1.ADDRESS like '%${t.address}%'
+			</if>
+			<if test="t.brand!=null and t.brand!=''">
+				and t1.BRAND like '%${t.brand}%'
+			</if>
+			<if test="t.createDate!=null and t.createDate!=''">
+				and t1.CREATEDATE like '%${t.createDate}%'
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and t1.STATE like '%${t.state}%'
+			</if>
+			<if test="t.checkDate!=null and t.checkDate!=''">
+				and t1.CHECKDATE like '%${t.checkDate}%'
+			</if>
+			<if test="t.checkConent!=null and t.checkConent!=''">
+				and t1.CHECKCONENT like '%${t.checkConent}%'
+			</if>
+			<if test="t.checkName!=null and t.checkName!=''">
+				and t1.CHECKNAME like '%${t.checkName}%'
+			</if>
+			<if test="t.stateH!=null and t.stateH!=''">
+				and t1.STATEH like '%${t.stateH}%'
+			</if>
+			<if test="t.checkDateH!=null and t.checkDateH!=''">
+				and t1.CHECKDATEH like '%${t.checkDateH}%'
+			</if>
+			<if test="t.checkConentH!=null and t.checkConentH!=''">
+				and t1.CHECKCONENTH like '%${t.checkConentH}%'
+			</if>
+			<if test="t.checkNameH!=null and t.checkNameH!=''">
+				and t1.CHECKNAMEH like '%${t.checkNameH}%'
+			</if>
+			<if test="t.stateS!=null and t.stateS!=''">
+				and t1.STATES like '%${t.stateS}%'
+			</if>
+			<if test="t.checkDateS!=null and t.checkDateS!=''">
+				and t1.CHECKDATES like '%${t.checkDateS}%'
+			</if>
+			<if test="t.checkConentS!=null and t.checkConentS!=''">
+				and t1.CHECKCONENTS like '%${t.checkConentS}%'
+			</if>
+			<if test="t.checkNameS!=null and t.checkNameS!=''">
+				and t1.CHECKNAMES like '%${t.checkNameS}%'
+			</if>
+			<if test="t.stateList!=null and t.stateList!=''">
+				and t1.STATE in 
+				 <foreach item="item" index="index" collection="t.stateList" open="(" separator="," close=")">
+					#{item}
+				</foreach> 
+			</if>
+			<if test="t.stateSList!=null and t.stateSList!=''">
+				and t1.STATES in 
+				 <foreach item="t.stateSList" index="index" collection="t.stateSList" open="(" separator="," close=")">
+					#{t.stateSList}
+				</foreach> 
+			</if>
+			<if test="t.stateHList!=null and t.stateHList!=''">
+				and t1.STATEH in 
+				 <foreach item="t.stateHList" index="index" collection="t.stateHList" open="(" separator="," close=")">
+					#{t.stateHList}
+				</foreach> 
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<delete id="deleteById" parameterType="java.lang.String" >
+		delete
+		from
+		ODS_PRO_BAC_INFO
+		where
+		PROID = #{proId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="add" parameterType="ProBacInfo" >
+		
+		INSERT INTO
+		ODS_PRO_BAC_INFO (
+		PROID,
+		HSCODE,
+		PRONAME,
+		PROMNAME,
+		CLASSID,
+		MAKER,
+		ADDRESS,
+		BRAND,
+		CREATEDATE,
+		STATE,
+		CHECKDATE,
+		CHECKCONENT,
+		CHECKNAME,
+		STATEH,
+		CHECKDATEH,
+		CHECKCONENTH,
+		CHECKNAMEH,
+		STATES,
+		CHECKDATES,
+		CHECKCONENTS,
+		CHECKNAMES
+		) VALUES (
+		#{proId, jdbcType=VARCHAR},
+		#{hsCode, jdbcType=VARCHAR},
+		#{proName, jdbcType=VARCHAR},
+		#{promName, jdbcType=VARCHAR},
+		#{classId, jdbcType=VARCHAR},
+		#{maker, jdbcType=VARCHAR},
+		#{address, jdbcType=VARCHAR},
+		#{brand, jdbcType=VARCHAR},
+		#{createDate, jdbcType=VARCHAR},
+		#{state, jdbcType=VARCHAR},
+		#{checkDate, jdbcType=VARCHAR},
+		#{checkConent, jdbcType=VARCHAR},
+		#{checkName, jdbcType=VARCHAR},		
+		#{stateH, jdbcType=VARCHAR},
+		#{checkDateH, jdbcType=VARCHAR},
+		#{checkConentH, jdbcType=VARCHAR},
+		#{checkNameH, jdbcType=VARCHAR},
+		#{stateS, jdbcType=VARCHAR},
+		#{checkDateS, jdbcType=VARCHAR},
+		#{checkConentS, jdbcType=VARCHAR},
+		#{checkNameS, jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="update" parameterType="ProBacInfo">
+		update
+		ODS_PRO_BAC_INFO
+		SET
+		HSCODE = #{hsCode, jdbcType=VARCHAR},
+		PRONAME = #{proName, jdbcType=VARCHAR},
+		PROMNAME = #{promName, jdbcType=VARCHAR},
+		CLASSID = #{classId, jdbcType=VARCHAR},
+		MAKER = #{maker, jdbcType=VARCHAR},
+		ADDRESS = #{address, jdbcType=VARCHAR},
+		BRAND = #{brand, jdbcType=VARCHAR},
+		CREATEDATE = #{createDate, jdbcType=VARCHAR},
+		STATE = #{state, jdbcType=VARCHAR}
+		WHERE
+		PROID = #{proId , jdbcType=VARCHAR}
+	</update>
+	<update id="updateState" parameterType="ProBacInfo">
+		update
+		ODS_PRO_BAC_INFO
+		SET
+		STATE = #{state, jdbcType=VARCHAR},
+		CHECKDATE = #{checkDate, jdbcType=VARCHAR},
+		CHECKCONENT= #{checkConent, jdbcType=VARCHAR},
+		CHECKNAME= #{checkName, jdbcType=VARCHAR}
+		WHERE
+		PROID = #{proId , jdbcType=VARCHAR}
+	</update>
+	<update id="updateStateH" parameterType="ProBacInfo">
+		update
+		ODS_PRO_BAC_INFO
+		SET
+		STATEH = #{stateH, jdbcType=VARCHAR},
+		CHECKDATEH = #{checkDateH, jdbcType=VARCHAR},
+		CHECKCONENTH= #{checkConentH, jdbcType=VARCHAR},
+		CHECKNAMEH= #{checkNameH, jdbcType=VARCHAR}
+		WHERE
+		PROID = #{proId , jdbcType=VARCHAR}
+	</update>
+	<update id="updateStateS" parameterType="ProBacInfo">
+		update
+		ODS_PRO_BAC_INFO
+		SET
+		STATES = #{stateS, jdbcType=VARCHAR},
+		CHECKDATES = #{checkDateS, jdbcType=VARCHAR},
+		CHECKCONENTS= #{checkConentS, jdbcType=VARCHAR},
+		CHECKNAMES= #{checkNameS, jdbcType=VARCHAR}
+		WHERE
+		PROID = #{proId , jdbcType=VARCHAR}
+	</update>
+	<select id="queryCheckListPage" resultType="ProBacInfo" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_PRO_BAC_INFO
+		<where>
+			STATE not in ('0')
+			<if test="t.proId!=null and t.proId!=''">
+				and PROID like '%${t.proId}%'
+			</if>
+			<if test="t.hsCode!=null and t.hsCode!=''">
+				and HSCODE like '%${t.hsCode}%'
+			</if>
+			<if test="t.proName!=null and t.proName!=''">
+				and PRONAME like '%${t.proName}%'
+			</if>
+			<if test="t.promName!=null and t.promName!=''">
+				and PROMNAME like '%${t.promName}%'
+			</if>
+			<if test="t.classId!=null and t.classId!=''">
+				and CLASSID like '%${t.classId}%'
+			</if>
+			<if test="t.maker!=null and t.maker!=''">
+				and MAKER like '%${t.maker}%'
+			</if>
+			<if test="t.address!=null and t.address!=''">
+				and ADDRESS like '%${t.address}%'
+			</if>
+			<if test="t.brand!=null and t.brand!=''">
+				and BRAND like '%${t.brand}%'
+			</if>
+			<if test="t.createDate!=null and t.createDate!=''">
+				and CREATEDATE like '%${t.createDate}%'
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and STATE like '%${t.state}%'
+			</if>
+			<if test="t.checkDate!=null and t.checkDate!=''">
+				and CHECKDATE like '%${t.checkDate}%'
+			</if>
+			<if test="t.checkConent!=null and t.checkConent!=''">
+				and CHECKCONENT like '%${t.checkConent}%'
+			</if>
+			<if test="t.checkName!=null and t.checkName!=''">
+				and CHECKNAME like '%${t.checkName}%'
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<select id="queryCheckListPageH" resultType="ProBacInfo" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_PRO_BAC_INFO
+		<where>
+			STATEH not in ('0')
+			<if test="t.proId!=null and t.proId!=''">
+				and PROID like '%${t.proId}%'
+			</if>
+			<if test="t.hsCode!=null and t.hsCode!=''">
+				and HSCODE like '%${t.hsCode}%'
+			</if>
+			<if test="t.proName!=null and t.proName!=''">
+				and PRONAME like '%${t.proName}%'
+			</if>
+			<if test="t.promName!=null and t.promName!=''">
+				and PROMNAME like '%${t.promName}%'
+			</if>
+			<if test="t.classId!=null and t.classId!=''">
+				and CLASSID like '%${t.classId}%'
+			</if>
+			<if test="t.maker!=null and t.maker!=''">
+				and MAKER like '%${t.maker}%'
+			</if>
+			<if test="t.address!=null and t.address!=''">
+				and ADDRESS like '%${t.address}%'
+			</if>
+			<if test="t.brand!=null and t.brand!=''">
+				and BRAND like '%${t.brand}%'
+			</if>
+			<if test="t.createDate!=null and t.createDate!=''">
+				and CREATEDATE like '%${t.createDate}%'
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and STATE like '%${t.state}%'
+			</if>
+			<if test="t.checkDate!=null and t.checkDate!=''">
+				and CHECKDATE like '%${t.checkDate}%'
+			</if>
+			<if test="t.checkConent!=null and t.checkConent!=''">
+				and CHECKCONENT like '%${t.checkConent}%'
+			</if>
+			<if test="t.checkName!=null and t.checkName!=''">
+				and CHECKNAME like '%${t.checkName}%'
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<select id="queryCheckListPageS" resultType="ProBacInfo" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_PRO_BAC_INFO
+		<where>
+			STATES not in ('0')
+			<if test="t.proId!=null and t.proId!=''">
+				and PROID like '%${t.proId}%'
+			</if>
+			<if test="t.hsCode!=null and t.hsCode!=''">
+				and HSCODE like '%${t.hsCode}%'
+			</if>
+			<if test="t.proName!=null and t.proName!=''">
+				and PRONAME like '%${t.proName}%'
+			</if>
+			<if test="t.promName!=null and t.promName!=''">
+				and PROMNAME like '%${t.promName}%'
+			</if>
+			<if test="t.classId!=null and t.classId!=''">
+				and CLASSID like '%${t.classId}%'
+			</if>
+			<if test="t.maker!=null and t.maker!=''">
+				and MAKER like '%${t.maker}%'
+			</if>
+			<if test="t.address!=null and t.address!=''">
+				and ADDRESS like '%${t.address}%'
+			</if>
+			<if test="t.brand!=null and t.brand!=''">
+				and BRAND like '%${t.brand}%'
+			</if>
+			<if test="t.createDate!=null and t.createDate!=''">
+				and CREATEDATE like '%${t.createDate}%'
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and STATE like '%${t.state}%'
+			</if>
+			<if test="t.checkDate!=null and t.checkDate!=''">
+				and CHECKDATE like '%${t.checkDate}%'
+			</if>
+			<if test="t.checkConent!=null and t.checkConent!=''">
+				and CHECKCONENT like '%${t.checkConent}%'
+			</if>
+			<if test="t.checkName!=null and t.checkName!=''">
+				and CHECKNAME like '%${t.checkName}%'
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+</mapper>

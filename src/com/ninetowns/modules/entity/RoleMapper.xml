@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Role">
+    <sql id="Base_Column_List" >
+        F_ROLE_ID as roleId ,
+        F_ROLE_NAME as roleName ,
+        F_DATA_UPD_TIME as dataUpdTime ,
+        F_DATA_UPD_USER as dataUpdUser ,
+        F_ROLE_TYPE as roleType ,
+        F_PROJECT_ID as projectId ,
+        F_ROLE_DESC as roleDesc
+    </sql>
+
+    <select id="getById" resultType="Role" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_ROLE
+        where F_ROLE_ID = #{roleId}
+    </select>
+
+    <!--resultType="User" 每返回一条结果封装到User里 -->
+    <select id="queryListPage" resultType="Role" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_ROLE
+        <where>
+            <if test="t.roleName != null and t.roleName != ''">
+                F_ROLE_NAME like '%${t.roleName}%'
+            </if>
+        </where>
+        <if test="paging.sort != null and paging.sort != ''">
+            ORDER BY ${paging.sort}
+        </if>
+        <if test="paging.direction != null and paging.direction != ''">
+            ${paging.direction}
+        </if>
+    </select>
+
+    <select id="queryAll" resultType="Role" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_ROLE
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from T_PUB_ROLE
+        where F_ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="add" parameterType="Role" >
+        <selectKey keyProperty="roleId" resultType="String" order="BEFORE">
+            select SEQ_ROLE.nextval AS roleId from dual
+        </selectKey>
+        INSERT INTO T_PUB_ROLE (
+            F_ROLE_ID ,
+            F_ROLE_NAME ,
+            F_DATA_UPD_TIME ,
+            F_DATA_UPD_USER ,
+            F_ROLE_TYPE ,
+            F_PROJECT_ID ,
+            F_ROLE_DESC
+        ) VALUES (
+            #{roleId, jdbcType=VARCHAR} ,
+            #{roleName, jdbcType=VARCHAR} ,
+            #{dataUpdTime, jdbcType=VARCHAR} ,
+            #{dataUpdUser, jdbcType=VARCHAR} ,
+            #{roleType, jdbcType=VARCHAR} ,
+            #{projectId, jdbcType=VARCHAR} ,
+            #{roleDesc, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="update" parameterType="Role">
+        update T_PUB_ROLE
+        SET
+            F_ROLE_NAME = #{roleName, jdbcType=VARCHAR} ,
+	        F_DATA_UPD_TIME = #{dataUpdTime, jdbcType=VARCHAR} ,
+	        F_DATA_UPD_USER = #{dataUpdUser, jdbcType=VARCHAR} ,
+	        F_ROLE_TYPE = #{roleType, jdbcType=VARCHAR} ,
+	        F_PROJECT_ID = #{projectId, jdbcType=VARCHAR} ,
+	        F_ROLE_DESC = #{roleDesc, jdbcType=VARCHAR}
+        WHERE
+	        F_ROLE_ID = #{roleId}
+    </update>
+
+
+    <select id="getURCount" resultType="int"  parameterType="java.lang.String" >
+        select count(*) from T_PUB_USER_ROLE
+        where F_ROLE_ID = #{s}
+    </select>
+
+    <select id="getRMCount" resultType="int"  parameterType="java.lang.String" >
+        select count(*) from T_PUB_ROLE_MENU
+        where F_ROLE_ID = #{s}
+    </select>
+</mapper>

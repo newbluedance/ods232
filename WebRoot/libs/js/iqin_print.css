@@ -1,0 +1,82 @@
+/* CSS Document */
+div{font-size:10pt;word-wrap:break-word;word-break:break-all;  }
+div.decl_checkdept{position:absolute; left:380px; top:65px;height:15px}
+div.ent_name{position:absolute; left:125px; top:86px; height:15px}
+div.decl_reg_no{position:absolute; left:102px; top:109px; width:87px; height:15px}
+div.ent_contact{position:absolute; left:260px; top:109px; width:71px; height:16px}
+div.ent_tel{position:absolute; left:374px; top:109px; width:108px; height:17px}
+div.decl_get_no{position:absolute; left:530px; top:86px; width:125px; height:13px}
+
+div.decl_date_y{position:absolute; left:524px; top:109px; width:34px; height:15px}
+div.decl_date_m{position:absolute; left:570px; top:109px; width:27px; height:14px}
+div.decl_date_d{position:absolute; left:612px; top:109px; width:26px; height:14px}
+
+div.consignee_cname{position:absolute; left:121px; top:137px; width:277px; height:13px}
+div.consignee_ename{position:absolute; left:121px; top:165px; width:515px; height:17px}
+div.consignor_cname{position:absolute; left:119px; top:193px; width:532px; height:17px}
+div.consignor_ename{position:absolute; left:118px; top:222px; width:532px; height:18px}
+
+div.Layer12{position:absolute; left:2px; top:275px; width:133px; height:146px}
+div.Layer13{position:absolute; left:138px; top:275px; width:120px; height:147px}
+div.Layer14{position:absolute; left:269px; top:275px; width:79px; height:146px}
+div.Layer15{position:absolute; left:351px; top:275px; width:78px; height:147px}
+div.Layer16{position:absolute; left:440px; top:275px; width:86px; height:146px}
+div.Layer17{position:absolute; left:537px; top:275px; width:109px; height:147px}
+
+div.contract_no{position:absolute; left:518px; top:490px; width:141px; height:18px}
+div.carrier_note_no{position:absolute; left:518px; top:519px; width:140px; height:16px}
+div.Layer31{position:absolute; left:192px; top:660px; width:183px; height:43px}
+div.mark_no{position:absolute; left:215px; top:735px; width:154px; height:120px}
+
+
+div.Layer45{position:absolute; left:532px; top:767px; width:106px; height:29px}
+div.Layer46{position:absolute; left:532px; top:801px; width:105px; height:28px}
+div.Layer47{position:absolute; left:530px; top:834px; width:107px; height:29px}
+
+
+div.sheet_type_codes1{position:absolute;  left:3px; top:733px; width:12px; height:10px}
+div.sheet_type_codes9{position:absolute;  left:3px; top:748px; width:12px; height:10px}
+div.sheet_type_codes10{position:absolute; left:3px; top:763px; width:12px; height:10px}
+div.sheet_type_codes12{position:absolute; left:3px; top:778px; width:12px; height:10px}
+div.sheet_type_codes11{position:absolute; left:3px; top:793px; width:12px; height:10px}
+div.sheet_type_codes13{position:absolute; left:3px; top:808px; width:12px; height:10px}
+div.sheet_type_codes14{position:absolute; left:3px; top:823px; width:12px; height:10px}
+div.sheet_type_codes3{position:absolute;  left:3px; top:835px; width:12px; height:10px}
+div.sheet_type_codes4{position:absolute;  left:3px; top:850px; width:12px; height:10px}
+
+div.sheet_type_codes8{position:absolute;  left:105px; top:733px; width:12px; height:10px}
+div.sheet_type_codes15{position:absolute; left:105px; top:748px; width:12px; height:10px}
+div.sheet_type_codes2{position:absolute;  left:105px; top:763px; width:12px; height:10px}
+div.sheet_type_codes6{position:absolute;  left:105px; top:778px; width:12px; height:10px}
+div.sheet_type_codes5{position:absolute;  left:105px; top:793px; width:12px; height:10px}
+div.sheet_type_codes7{position:absolute;  left:105px; top:808px; width:12px; height:10px}
+div.sheet_type_codes16{position:absolute; left:105px; top:823px; width:162px; height:10px}
+div.sheet_type_codes17{position:absolute; left:105px; top:835px; width:162px; height:10px}
+div.sheet_type_codes18{position:absolute; left:105px; top:850px; width:162px; height:10px}
+
+
+div.trans_type_code{position:absolute; left:155px; top:488px; width:206px; height:22px}
+div.trade_mode_code{position:absolute; left:90px; top:517px; width:85px; height:23px}
+div.trade_country_code{position:absolute; left:307px; top:517px; width:91px; height:22px}
+div.arri_date{position:absolute; left:91px; top:547px; width:86px; height:21px}
+div.desp_country_code{position:absolute; left:307px; top:546px; width:91px; height:21px}
+div.license_code-approve_code{position:absolute; left:517px; top:545px; width:129px; height:23px}
+div.unload_date{position:absolute; left:91px; top:573px; width:89px; height:23px}
+div.desp_port_code{position:absolute; left:308px; top:573px; width:150px; height:23px}
+div.entry_port_code{position:absolute; left:516px; top:573px; width:131px; height:23px}
+div.counter_claim{position:absolute; left:90px; top:602px; width:90px; height:22px}
+div.via_port_code{position:absolute; left:308px; top:603px; width:150px; height:18px}
+div.dest_code{position:absolute; left:516px; top:601px; width:126px; height:23px}
+div.special_require{position:absolute; left:189px; top:623px; width:445px; height:23px}
+div.goods_place{position:absolute; left:519px; top:654px; width:111px; height:22px}
+div.purpose_code{position:absolute; left:521px; top:687px; width:108px; height:20px}
+
+div.value_checkup_flag{position:absolute; left:577px; top:710px; width:10px; height:8px}
+div.value_checkup_flag2{position:absolute; left:605px; top:710px; width:16px; height:13px}
+
+div.ent_property{position:absolute; left:525px; top:134px; width:13px; height:12px}
+div.ent_property2{position:absolute; left:562px; top:134px; width:16px; height:17px}
+div.ent_property3{position:absolute; left:598px; top:134px; width:13px; height:13px}
+
+div.Layer55{position:absolute; left:12px; top:876px; width:624px; height:105px}
+.tbctrl {font-size: 10pt;}

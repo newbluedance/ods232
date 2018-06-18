@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ExcField" >
+	<sql id="Base_Column_List" >
+		FIELDID as fieldId,
+		TABLENAME as tableName,
+		CLASSID as classId,
+		FIELDKEY as fieldKey,
+		FIELDVALUE as fieldValue,
+		FIELDTYPE as fieldType
+	</sql>
+	<select id="getById" resultType="ExcField" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_EXC_FIELD
+		where
+		FIELDID = #{fieldId,jdbcType=VARCHAR}
+	</select>
+	<select id="queryAll" resultType="ExcField" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_EXC_FIELD
+		<where>
+			<if test="fieldId!=null and fieldId!=''">
+				FIELDID like '%${fieldId}%'
+			</if>
+			<if test="tableName!=null and tableName!=''">
+				and TABLENAME like '%${tableName}%'
+			</if>
+			<if test="classId!=null and classId!=''">
+				and CLASSID like '%${classId}%'
+			</if>
+			<if test="fieldKey!=null and fieldKey!=''">
+				and FIELDKEY like '%${fieldKey}%'
+			</if>
+			<if test="fieldValue!=null and fieldValue!=''">
+				and FIELDVALUE like '%${fieldValue}%'
+			</if>
+			<if test="fieldType!=null and fieldType!=''">
+				and FIELDTYPE like '%${fieldType}%'
+			</if>
+		</where>
+	</select>
+	<select id="queryListPage" resultType="ExcField" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_EXC_FIELD
+		<where>
+			<if test="t.fieldId!=null and t.fieldId!=''">
+				FIELDID like '%${t.fieldId}%'
+			</if>
+			<if test="t.tableName!=null and t.tableName!=''">
+				and TABLENAME like '%${t.tableName}%'
+			</if>
+			<if test="t.classId!=null and t.classId!=''">
+				and CLASSID like '%${t.classId}%'
+			</if>
+			<if test="t.fieldKey!=null and t.fieldKey!=''">
+				and FIELDKEY like '%${t.fieldKey}%'
+			</if>
+			<if test="t.fieldValue!=null and t.fieldValue!=''">
+				and FIELDVALUE like '%${t.fieldValue}%'
+			</if>
+			<if test="t.fieldType!=null and t.fieldType!=''">
+				and FIELDTYPE like '%${t.fieldType}%'
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<delete id="deleteById" parameterType="java.lang.String" >
+		delete
+		from
+		ODS_EXC_FIELD
+		where
+		FIELDID = #{fieldId,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteByClassId" parameterType="java.lang.String" >
+		delete
+		from
+		ODS_EXC_FIELD
+		where
+		CLASSID = #{classId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="add" parameterType="ExcField" >
+		INSERT INTO
+		ODS_EXC_FIELD (
+		TABLENAME,
+		CLASSID,
+		FIELDKEY,
+		FIELDVALUE,
+		FIELDTYPE
+		) VALUES (
+		#{tableName, jdbcType=VARCHAR},
+		#{classId, jdbcType=VARCHAR},
+		#{fieldKey, jdbcType=VARCHAR},
+		#{fieldValue, jdbcType=VARCHAR},
+		#{fieldType, jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="update" parameterType="ExcField">
+		update
+		ODS_EXC_FIELD
+		SET
+		TABLENAME = #{tableName, jdbcType=VARCHAR},
+		CLASSID = #{classId, jdbcType=VARCHAR},
+		FIELDKEY = #{fieldKey, jdbcType=VARCHAR},
+		FIELDVALUE = #{fieldValue, jdbcType=VARCHAR},
+		FIELDTYPE = #{fieldType, jdbcType=VARCHAR}
+		WHERE
+		FIELDID = #{fieldId , jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ProClass" >
+	<sql id="Base_Column_List" >
+		CLASSID as classId,
+		CLASSNAME as className,
+		PARENTID as parentId,
+		PRIORITY as priority,
+		CLASSDESC as classDesc,
+		CLASSLEVEL as classLevel,
+		CLASSICON as classIcon,
+		CREATETIME as createTime,
+		CREATEUSER as createUser,
+		MODIFYTIME as modifyTime,
+		MODIFYUSER as modifyUser,
+		STATE as state
+	</sql>
+	<select id="getById" resultType="ProClass" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_PRO_CLASS
+		where
+		CLASSID = #{classId,jdbcType=VARCHAR}
+	</select>
+	<select id="queryAll" resultType="ProClass" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_PRO_CLASS
+	</select>
+	<select id="queryListPage" resultType="ProClass" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_PRO_CLASS
+		<where>
+			<if test="t.classId!=null and t.classId!=''">
+				CLASSID like '%${t.classId}%'
+			</if>
+			<if test="t.className!=null and t.className!=''">
+				and CLASSNAME like '%${t.className}%'
+			</if>
+			<if test="t.parentId!=null and t.parentId!=''">
+				and PARENTID like '%${t.parentId}%'
+			</if>
+			<if test="t.priority!=null and t.priority!=''">
+				and PRIORITY like '%${t.priority}%'
+			</if>
+			<if test="t.classDesc!=null and t.classDesc!=''">
+				and CLASSDESC like '%${t.classDesc}%'
+			</if>
+			<if test="t.classLevel!=null and t.classLevel!=''">
+				and CLASSLEVEL like '%${t.classLevel}%'
+			</if>
+			<if test="t.classIcon!=null and t.classIcon!=''">
+				and CLASSICON like '%${t.classIcon}%'
+			</if>
+			<if test="t.createTime!=null and t.createTime!=''">
+				and CREATETIME like '%${t.createTime}%'
+			</if>
+			<if test="t.createUser!=null and t.createUser!=''">
+				and CREATEUSER like '%${t.createUser}%'
+			</if>
+			<if test="t.modifyTime!=null and t.modifyTime!=''">
+				and MODIFYTIME like '%${t.modifyTime}%'
+			</if>
+			<if test="t.modifyUser!=null and t.modifyUser!=''">
+				and MODIFYUSER like '%${t.modifyUser}%'
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and STATE like '%${t.state}%'
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<delete id="deleteById" parameterType="java.lang.String" >
+		delete
+		from
+		ODS_PRO_CLASS
+		where
+		CLASSID = #{classId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="add" parameterType="ProClass" >
+		<selectKey keyProperty="classId" resultType="String" order="BEFORE">
+            select SEQ_ODS_PRO_CLASS.nextval AS classId from dual
+        </selectKey>
+		INSERT INTO
+		ODS_PRO_CLASS (
+		CLASSID,
+		CLASSNAME,
+		PARENTID,
+		PRIORITY,
+		CLASSDESC,
+		CLASSLEVEL,
+		CLASSICON,
+		CREATETIME,
+		CREATEUSER,
+		MODIFYTIME,
+		MODIFYUSER,
+		STATE
+		) VALUES (
+		#{classId, jdbcType=VARCHAR},
+		#{className, jdbcType=VARCHAR},
+		#{parentId, jdbcType=VARCHAR},
+		#{priority, jdbcType=VARCHAR},
+		#{classDesc, jdbcType=VARCHAR},
+		#{classLevel, jdbcType=VARCHAR},
+		#{classIcon, jdbcType=VARCHAR},
+		#{createTime, jdbcType=VARCHAR},
+		#{createUser, jdbcType=VARCHAR},
+		#{modifyTime, jdbcType=VARCHAR},
+		#{modifyUser, jdbcType=VARCHAR},
+		#{state, jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="update" parameterType="ProClass">
+		update
+		ODS_PRO_CLASS
+		SET
+		CLASSNAME = #{className, jdbcType=VARCHAR},
+		PARENTID = #{parentId, jdbcType=VARCHAR},
+		PRIORITY = #{priority, jdbcType=VARCHAR},
+		CLASSDESC = #{classDesc, jdbcType=VARCHAR},
+		CLASSLEVEL = #{classLevel, jdbcType=VARCHAR},
+		CLASSICON = #{classIcon, jdbcType=VARCHAR},
+		CREATETIME = #{createTime, jdbcType=VARCHAR},
+		CREATEUSER = #{createUser, jdbcType=VARCHAR},
+		MODIFYTIME = #{modifyTime, jdbcType=VARCHAR},
+		MODIFYUSER = #{modifyUser, jdbcType=VARCHAR},
+		STATE = #{state, jdbcType=VARCHAR}
+		WHERE
+		CLASSID = #{classId , jdbcType=VARCHAR}
+	</update>
+</mapper>

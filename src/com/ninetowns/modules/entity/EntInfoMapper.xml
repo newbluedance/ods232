@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EntInfo">
+<sql id="Base_Column_List">
+        TECH_REG_CODE as techRegCode,
+        ENT_REG_CODE as entRegCode,
+        REG_DATE as regDate,
+        ENT_CNAME as entCname,
+        ENT_ENAME as entEname,
+        ENT_SHORT_NAME as entShortName,
+        ADDRESS as address,
+        POST_CODE as postCode,
+        TELEPHONE as telephone,
+        FAX as fax,
+        EMAIL as email,
+        LEGAL_PERSON as legalPerson,
+        CONTACTOR as contactor,
+        ADMI_PLACE_CODE as admiPlaceCode,
+        CUSTOM_REG_CODE as customRegCode,
+        ENT_TYPE_CODE as entTypeCode,
+        ENT_PROPERTY as entProperty,
+        LEVEL_CLASS_CODE as levelClassCode,
+        ENTRY_EXIT_LICENSE as entryExitLicense,
+        BUSINESS_SCOPE as businessScope,
+        INSP_MODE_CODE as inspModeCode,
+        TIME_FEE_MODE_CODE as timeFeeModeCode,
+        BANK as bank,
+        BANK_ACCOUNT as bankAccount,
+        AUTID_DATE as autidDate,
+        AUDIT_CONCLUSION as auditConclusion,
+        BLACKLIST_FLAG as blacklistFlag,
+        CLOSE_FLAG as closeFlag,
+        REMARK as remark,
+        OPERATOR_CODE as operatorCode,
+        OPERATE_DATE as operateDate,
+        OLD_ENT_CODE as oldEntCode,
+        ORG_CODE as orgCode,
+        TRANS_FLAG as transFlag,
+        OUTER_FLAG as outerFlag,
+        PRE_FLAG as preFlag,
+        INVEST_COUNTRY_CODE as investCountryCode,
+        E_DECL_FLAG as edeclFlag,
+        I_DECL_FLAG as ideclFlag,
+        E_PASS_FLAG as epassFlag,
+        I_PASS_FLAG as ipassFlag,
+        AUTO_CHECK_FLAG as autoCheckFlag,
+        AUTO_PASS_FLAG as autoPassFlag,
+        PROD_FLAG as prodFlag,
+        ISO9000_FLAG as iso9000Flag,
+        P_DECL_FLAG as pdeclFlag,
+        TECH_REG_NO as techRegNo
+        
+
+</sql>
+    <!-- 分页查询 -->
+		<select id="queryListPage" resultType="EntInfo" parameterType="java.util.HashMap">
+		SELECT
+			T_ENT_INFO.ENT_REG_CODE AS entRegCode,
+			T_ENT_INFO.REG_DATE AS regDate,
+			T_ENT_INFO.ENT_CNAME AS entCname,
+			T_ENT_INFO.LEGAL_PERSON as legalPerson,
+			T_ENT_INFO.ADDRESS AS address,
+			T_ENT_INFO.CLOSE_FLAG as closeFlag,
+			T_ENT_INFO.BLACKLIST_FLAG as blacklistFlag,
+			T_ENT_INFO.TELEPHONE AS telephone
+	    FROM
+		T_ENT_INFO
+		<where>
+		<if test="t.entRegCode != null and t.entRegCode != ''">
+                T_ENT_INFO.ENT_REG_CODE like '%${t.entRegCode}%'
+        </if>
+        <if test="t.entCname!=null and t.entCname !=''">
+             and   T_ENT_INFO.ENT_CNAME like '%${t.entCname}%'
+        </if>
+        <if test="t.closeFlag!=null and t.closeFlag !=''">
+             and   T_ENT_INFO.CLOSE_FLAG like '%${t.closeFlag}%'
+        </if>
+        <if test="t.blacklistFlag!=null and t.blacklistFlag !=''">
+             and   T_ENT_INFO.BLACKLIST_FLAG like '%${t.blacklistFlag}%'
+        </if>
+        <if test="t.legalPerson!=null and t.legalPerson !=''">
+             and   T_ENT_INFO.LEGAL_PERSON like '%${t.legalPerson}%'
+        </if>
+		</where>
+		</select>
+		<select id="getById" resultType="EntInfo">
+		select
+		<include refid="Base_Column_List"/>
+		from
+		T_ENT_INFO
+		where
+		ENT_REG_CODE=#{entRegCode,jdbcType=VARCHAR}
+		</select>
+		<insert id="add" parameterType="EntInfo">
+		insert into T_ENT_INFO (TECH_REG_CODE,ENT_REG_CODE,REG_DATE,ENT_CNAME,ENT_ENAME,ENT_SHORT_NAME,ADDRESS
+		,POST_CODE,TELEPHONE,FAX,EMAIL,LEGAL_PERSON,CONTACTOR,ADMI_PLACE_CODE,CUSTOM_REG_CODE,ENT_TYPE_CODE
+		,ENT_PROPERTY,LEVEL_CLASS_CODE,ENTRY_EXIT_LICENSE,BUSINESS_SCOPE,INSP_MODE_CODE,TIME_FEE_MODE_CODE
+		,BANK,BANK_ACCOUNT,AUTID_DATE,AUDIT_CONCLUSION,BLACKLIST_FLAG,CLOSE_FLAG,REMARK,OPERATOR_CODE
+		,OPERATE_DATE,OLD_ENT_CODE,ORG_CODE,TRANS_FLAG,OUTER_FLAG,PRE_FLAG,INVEST_COUNTRY_CODE,E_DECL_FLAG,I_DECL_FLAG
+		,E_PASS_FLAG,I_PASS_FLAG,AUTO_CHECK_FLAG,AUTO_PASS_FLAG,PROD_FLAG,ISO9000_FLAG,P_DECL_FLAG,
+		TECH_REG_NO
+		)values(
+		#{techRegCode,jdbcType=VARCHAR},#{entRegCode,jdbcType=VARCHAR},#{regDate1,jdbcType=TIME},#{entCname,jdbcType=VARCHAR},
+		#{entEname,jdbcType=VARCHAR},#{entShortName,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{postCode,jdbcType=VARCHAR},
+		#{telephone,jdbcType=VARCHAR},#{fax,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{legalPerson,jdbcType=VARCHAR},
+		#{contactor,jdbcType=VARCHAR},#{admiPlaceCode,jdbcType=VARCHAR},#{customRegCode,jdbcType=VARCHAR},#{entTypeCode,jdbcType=VARCHAR},
+		#{entProperty,jdbcType=VARCHAR},#{levelClassCode,jdbcType=VARCHAR},#{entryExitLicense,jdbcType=VARCHAR},#{businessScope,jdbcType=VARCHAR},
+		#{inspModeCode,jdbcType=VARCHAR},#{timeFeeModeCode,jdbcType=VARCHAR},#{bank,jdbcType=VARCHAR},#{bankAccount,jdbcType=VARCHAR},
+		#{autidDate1,jdbcType=TIME},#{auditConclusion,jdbcType=VARCHAR},#{blacklistFlag,jdbcType=VARCHAR},#{closeFlag,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},#{operatorCode,jdbcType=VARCHAR},#{operateDate1,jdbcType=TIME},#{oldEntCode,jdbcType=VARCHAR},
+		#{orgCode,jdbcType=VARCHAR},#{transFlag,jdbcType=VARCHAR},#{outerFlag,jdbcType=VARCHAR},#{preFlag,jdbcType=VARCHAR},
+		#{investCountryCode,jdbcType=VARCHAR},#{edeclFlag,jdbcType=VARCHAR},#{ideclFlag,jdbcType=VARCHAR},#{epassFlag,jdbcType=VARCHAR},
+		#{ipassFlag,jdbcType=VARCHAR},#{autoCheckFlag,jdbcType=VARCHAR},#{autoPassFlag,jdbcType=VARCHAR},#{prodFlag,jdbcType=VARCHAR},
+		#{iso9000Flag,jdbcType=VARCHAR},#{pdeclFlag,jdbcType=VARCHAR},#{techRegNo,jdbcType=VARCHAR}
+		
+		)
+		</insert>
+</mapper>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="User">
+    <sql id="Base_Column_List" >
+        F_USER_ID AS userId,
+        F_LOGIN_NAME AS loginName,
+        F_LOGIN_PWD AS loginPwd,
+        F_FIRST_NAME AS firstName,
+        F_MIDDLE_NAME AS middleName,
+        F_DISPLAY_NAME AS displayName,
+        F_SEX AS sex,
+        F_EMAIL AS email,
+        F_ID_CARD_NO AS idCardNo,
+        F_TELEPHONE AS telephone,
+        F_TELEPHONE_SHORT AS telephoneShort,
+        F_MOBILE_NO AS mobileNo,
+        F_MOBILE_NO_SHORT AS mobileNoShort,
+        F_CRT_TIME AS crtTime,
+        F_CRT_USER AS crtUser,
+        F_DEPT_ID AS deptId,
+        F_IS_NEW_USER AS isNewUser,
+        F_DATA_UPD_TIME AS dataUpdTime,
+        F_DATA_UPD_USER AS dataUpdUser,
+        F_DATA_VALID_FLAG AS dataValidFlag,
+        F_LOGIN_STATUS AS loginStatus,
+        F_LOGOUT_TYPE AS logoutType,
+        F_DEPT_CODE AS deptCode,
+        F_POSITION_CODE AS positionCode,
+        F_CURRENT_ORGID AS currentOrgid,
+        F_ADMIN_FLAG AS adminFlag,
+        F_STAFF_NO AS staffNo,
+        F_NATION AS nation,
+        F_NATIVE_PLACE AS nativePlace,
+        F_APPARAT AS apparat,
+        F_BIRTHDAY AS birthday,
+        F_EDUCATION AS education,
+        F_FINISH_TIME AS finishTime,
+        F_FINISH_SCHOOL AS finishSchool,
+        F_SPECIALTY AS specialty,
+        F_USER_TYPE AS userType
+    </sql>
+
+    <select id="getById" resultType="User" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_USER
+        where F_USER_ID = #{userId}
+    </select>
+
+    <!--resultType="User" 每返回一条结果封装到User里 -->
+    <select id="queryListPage" resultType="User" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_USER
+        <where>
+            <if test="t.loginName != null and t.loginName != ''">
+                F_LOGIN_NAME like '%${t.loginName}%'
+            </if>
+            <if test="t.displayName != null and t.displayName != ''">
+                and F_DISPLAY_NAME like '%${t.displayName}%'
+            </if>
+            <if test="t.deptIds != null and t.deptIds != ''">
+                and F_DEPT_ID in (${t.deptIds})
+            </if>
+        </where>
+        <if test="paging.sort != null and paging.sort != ''">
+            ORDER BY ${paging.sort}
+        </if>
+        <if test="paging.direction != null and paging.direction != ''">
+            ${paging.direction}
+        </if>
+    </select>
+    <!-- 总记录数 -->
+    <!--<select id="count" parameterType="User" resultType="int">
+        select count(0) from T_PUB_USER
+        <where>
+            <if test="t.loginName != null and t.loginName != ''">
+                F_LOGIN_NAME like '%${t.loginName}%'
+            </if>
+            <if test="t.displayName != null and t.displayName != ''">
+                and F_DISPLAY_NAME like '%${t.displayName}%'
+            </if>
+        </where>
+    </select>-->
+
+    <select id="queryAll" resultType="User" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_USER
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from T_PUB_USER
+        where F_USER_ID = #{userId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="add" parameterType="User" >
+        insert into T_PUB_USER (
+        F_LOGIN_NAME,
+        F_LOGIN_PWD,
+        F_FIRST_NAME,
+        F_MIDDLE_NAME,
+        F_DISPLAY_NAME,
+        F_SEX,
+        F_EMAIL,
+        F_ID_CARD_NO,
+        F_TELEPHONE,
+        F_TELEPHONE_SHORT,
+        F_MOBILE_NO,
+        F_MOBILE_NO_SHORT,
+        F_CRT_TIME,
+        F_CRT_USER,
+        F_DEPT_ID,
+        F_IS_NEW_USER,
+        F_DATA_UPD_TIME,
+        F_DATA_UPD_USER,
+        F_DATA_VALID_FLAG,
+        F_LOGIN_STATUS,
+        F_LOGOUT_TYPE,
+        F_DEPT_CODE,
+        F_POSITION_CODE,
+        F_CURRENT_ORGID,
+        F_ADMIN_FLAG,
+        F_STAFF_NO,
+        F_NATION,
+        F_NATIVE_PLACE,
+        F_APPARAT,
+        F_BIRTHDAY,
+        F_EDUCATION,
+        F_FINISH_TIME,
+        F_FINISH_SCHOOL,
+        F_SPECIALTY)
+        values (
+        #{loginName,jdbcType=VARCHAR},
+        #{loginPwd,jdbcType=VARCHAR},
+        #{firstName,jdbcType=VARCHAR},
+        #{middleName,jdbcType=VARCHAR},
+        #{displayName,jdbcType=VARCHAR},
+        #{sex,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR},
+        #{idCardNo,jdbcType=VARCHAR},
+        #{telephone,jdbcType=VARCHAR},
+        #{telephoneShort,jdbcType=VARCHAR},
+        #{mobileNo,jdbcType=VARCHAR},
+        #{mobileNoShort,jdbcType=VARCHAR},
+        #{crtTime,jdbcType=VARCHAR},
+        #{crtUser,jdbcType=VARCHAR},
+        #{deptId,jdbcType=VARCHAR},
+        #{isNewUser,jdbcType=VARCHAR},
+        #{dataUpdTime,jdbcType=VARCHAR},
+        #{dataUpdUser,jdbcType=VARCHAR},
+        #{dataValidFlag,jdbcType=VARCHAR},
+        #{loginStatus,jdbcType=VARCHAR},
+        #{logoutType,jdbcType=VARCHAR},
+        #{deptCode,jdbcType=VARCHAR},
+        #{positionCode,jdbcType=VARCHAR},
+        #{currentOrgid,jdbcType=VARCHAR},
+        #{adminFlag,jdbcType=VARCHAR},
+        #{staffNo,jdbcType=VARCHAR},
+        #{nation,jdbcType=VARCHAR},
+        #{nativePlace,jdbcType=VARCHAR},
+        #{apparat,jdbcType=VARCHAR},
+        #{birthday,jdbcType=VARCHAR},
+        #{education,jdbcType=VARCHAR},
+        #{finishTime,jdbcType=VARCHAR},
+        #{finishSchool,jdbcType=VARCHAR},
+        #{specialty,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="queryUserName" resultType="User" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_USER
+        where F_LOGIN_NAME = #{userName}
+    </select>
+
+    <select id="getSSOByLoginName" resultType="User" parameterType="java.lang.String" >
+        SELECT
+            T_USER.USER_ID AS userId,
+            SUBSTR (
+                T_USER.LOGIN_NAME,
+                0,
+                (
+                    INSTR (
+                        T_USER.LOGIN_NAME,
+                        '@jsciq',
+                        1,
+                        1
+                    ) - 1
+                )
+            ) AS loginName,
+            USERINFO.LOGIN_PWD AS loginPwd,
+            T_USER.FIRST_NAME AS firstName,
+            T_USER.MIDDLE_NAME AS middleName,
+            T_USER.DISPLAY_NAME AS displayName,
+            TRIM (T_USER.SEX) AS sex,
+            T_USER.EMAIL AS email,
+            T_USER.ID_CARD_NO AS idCardNo,
+            T_USER.TELEPHONE AS telephone,
+            T_USER.TELEPHONE_SHORT AS telephoneShort,
+            T_USER.MOBILE_NO AS mobileNo,
+            T_USER.MOBILE_NO_SHORT AS mobileNoShort,
+            T_USER.CRT_TIME AS crtTime,
+            T_USER.CRT_USER AS crtUser,
+            T_USER.ORG_ID AS deptId,
+            TRIM (T_USER.IS_NEW_USER) AS isNewUser,
+            T_USER.DATA_UPD_TIME AS dataUpdTime,
+            T_USER.DATA_UPD_USER AS dataUpdUser,
+            T_USER.DATA_VALID_FLAG AS dataValidFlag,
+            T_USER.LOGIN_STATUS AS loginStatus,
+            T_USER.LOGOUT_TYPE AS logoutType,
+            T_USER.DEPT_CODE AS deptCode,
+            T_USER.POSITION_CODE AS positionCode,
+            T_USER.CURRENT_ORGID AS currentOrgid,
+            T_USER.ADMIN_FLAG AS adminFlag,
+            T_USER.STAFF_NO AS staffNo,
+            T_USER.NATION AS nation,
+            T_USER.NATIVE_PLACE AS nativePlace,
+            T_USER.APPARAT AS apparat,
+            T_USER.BIRTHDAY AS birthday,
+            T_USER.EDUCATION AS education,
+            T_USER.FINISH_TIME AS finishTime,
+            T_USER.FINISH_SCHOOL AS finishSchool,
+            T_USER.SPECIALTY AS specialty,
+            T_USER.USER_TYPE AS userType
+
+        FROM
+            ZJPORTAL.T_USER@sso T_USER
+        LEFT JOIN ZJPORTAL.HR_SSO_USERINF@sso USERINFO ON T_USER.USER_ID = USERINFO.USER_ID
+        WHERE
+            T_USER.CURRENT_ORGID = '3201'
+        and not EXISTS (
+            SELECT 1 FROM T_PUB_USER T1 WHERE SUBSTR(T_USER.LOGIN_NAME,0,(INSTR(T_USER.LOGIN_NAME,'@jsciq', 1, 1)-1))=T1.F_LOGIN_NAME
+        ) AND T_USER.LOGIN_NAME = #{userName}
+    </select>
+
+    <select id="queryMenusByUser" resultType="Menu" parameterType="java.lang.String" >
+        SELECT DISTINCT
+            PM.F_MENU_ID as menuId ,
+            PM.F_MENU_NAME as menuName ,
+            PM.F_MENU_PARENT_ID as menuParentId ,
+            PM.F_MENU_URL as menuUrl ,
+            PM.F_MENU_DESC as menuDesc ,
+            PM.F_MENU_LEVEL as menuLevel ,
+            PM.F_MENU_ORDER as menuOrder ,
+            PM.F_PROJECT_ID as projectId ,
+            PM.F_MENU_TARGET as menuTarget ,
+            PM.F_MENU_ICON as menuIcon ,
+            PM.F_CRT_TIME as crtTime ,
+            PM.F_CRT_USER as crtUser ,
+            PM.F_DATA_UPD_TIME as dataUpdTime ,
+            PM.F_DATA_UPD_USER as dataUpdUser ,
+            PM.F_DATA_VALID_FLAG as dataValidFlag
+        FROM
+          T_PUB_USER PU
+          LEFT JOIN T_PUB_USER_ROLE PUR ON PUR.F_USER_ID = PU.F_USER_ID
+          LEFT JOIN T_PUB_ROLE PR ON PR.F_ROLE_ID = PUR.F_ROLE_ID
+          LEFT JOIN T_PUB_ROLE_MENU PRM ON PRM.F_ROLE_ID = PR.F_ROLE_ID
+          LEFT JOIN T_PUB_MENU PM ON PM.F_MENU_ID = PRM.F_MENU_ID
+        WHERE
+          PU.F_USER_ID = #{userId}
+        ORDER BY F_MENU_ORDER
+    </select>
+
+    <update id="update" parameterType="User">
+        update T_PUB_USER
+        SET
+        F_LOGIN_NAME = #{loginName, jdbcType=VARCHAR},
+        F_LOGIN_PWD = #{loginPwd, jdbcType=VARCHAR},
+        F_FIRST_NAME = #{firstName, jdbcType=VARCHAR},
+        F_MIDDLE_NAME = #{middleName, jdbcType=VARCHAR},
+        F_DISPLAY_NAME = #{displayName, jdbcType=VARCHAR},
+        F_SEX = #{sex, jdbcType=VARCHAR},
+        F_EMAIL = #{email, jdbcType=VARCHAR},
+        F_ID_CARD_NO = #{idCardNo, jdbcType=VARCHAR},
+        F_TELEPHONE = #{telephone, jdbcType=VARCHAR},
+        F_TELEPHONE_SHORT = #{telephoneShort, jdbcType=VARCHAR},
+        F_MOBILE_NO = #{mobileNo, jdbcType=VARCHAR},
+        F_MOBILE_NO_SHORT = #{mobileNoShort, jdbcType=VARCHAR},
+        F_CRT_TIME = #{crtTime, jdbcType=VARCHAR},
+        F_CRT_USER = #{crtUser, jdbcType=VARCHAR},
+        F_DEPT_ID = #{deptId, jdbcType=VARCHAR},
+        F_IS_NEW_USER = #{isNewUser, jdbcType=VARCHAR},
+        F_DATA_UPD_TIME = #{dataUpdTime, jdbcType=VARCHAR},
+        F_DATA_UPD_USER = #{dataUpdUser, jdbcType=VARCHAR},
+        F_DATA_VALID_FLAG = #{dataValidFlag, jdbcType=VARCHAR},
+        F_LOGIN_STATUS = #{loginStatus, jdbcType=VARCHAR},
+        F_LOGOUT_TYPE = #{logoutType, jdbcType=VARCHAR},
+        F_DEPT_CODE = #{deptCode, jdbcType=VARCHAR},
+        F_POSITION_CODE = #{positionCode, jdbcType=VARCHAR},
+        F_CURRENT_ORGID = #{currentOrgid, jdbcType=VARCHAR},
+        F_ADMIN_FLAG = #{adminFlag, jdbcType=VARCHAR},
+        F_STAFF_NO = #{staffNo, jdbcType=VARCHAR},
+        F_NATION = #{nation, jdbcType=VARCHAR},
+        F_NATIVE_PLACE = #{nativePlace, jdbcType=VARCHAR},
+        F_APPARAT = #{apparat, jdbcType=VARCHAR},
+        F_BIRTHDAY = #{birthday, jdbcType=VARCHAR},
+        F_EDUCATION = #{education, jdbcType=VARCHAR},
+        F_FINISH_TIME = #{finishTime, jdbcType=VARCHAR},
+        F_FINISH_SCHOOL = #{finishSchool, jdbcType=VARCHAR},
+        F_SPECIALTY = #{specialty, jdbcType=VARCHAR},
+        F_USER_TYPE = #{userType, jdbcType=VARCHAR}
+        WHERE F_USER_ID = #{userId}
+    </update>
+
+</mapper>

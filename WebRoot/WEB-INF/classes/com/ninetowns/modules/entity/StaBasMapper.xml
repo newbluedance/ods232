@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="StaBas" >
+	<sql id="Base_Column_List" >
+		STAID as staId,
+		PROID as proId,
+		PRONAME as proName,
+		BASISCLASS as basisClass,
+		BASEFILE as baseFile,
+		CASNEG as casneg,
+		CREATEDATE as createDate,
+		STATE as state,
+		CHECKDATE as checkDate,
+		CHECKCONENT as checkConent,
+		CHECKNAME as checkName,
+		EXPIRYDATA as expiryData,
+		ISVALID as isValid,
+		VALIDDATA as validData
+	</sql>
+	<select id="getById" resultType="StaBas" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_STA_BAS
+		where
+		STAID = #{staId,jdbcType=VARCHAR}
+	</select>
+	<select id="queryAll" resultType="StaBas" parameterType="StaBas" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_STA_BAS
+		<where>
+			<if test="staId!=null and staId!=''">
+				STAID like '%${staId}%'
+			</if>
+			<if test="proId!=null and proId!=''">
+				and PROID like '%${proId}%'
+			</if>
+			<if test="proName!=null and proName!=''">
+				and PRONAME like '%${proName}%'
+			</if>
+			<if test="basisClass!=null and basisClass!=''">
+				and BASISCLASS like '%${basisClass}%'
+			</if>
+			<if test="baseFile!=null and baseFile!=''">
+				and BASEFILE like '%${baseFile}%'
+			</if>
+			<if test="casneg!=null and casneg!=''">
+				and CASNEG like '%${casneg}%'
+			</if>
+			<if test="createDate!=null and createDate!=''">
+				and CREATEDATE like '%${createDate}%'
+			</if>
+			<if test="state!=null and state!=''">
+				and STATE like '%${state}%'
+			</if>
+			<if test="checkDate!=null and checkDate!=''">
+				and CHECKDATE like '%${checkDate}%'
+			</if>
+			<if test="checkConent!=null and checkConent!=''">
+				and CHECKCONENT like '%${checkConent}%'
+			</if>
+			<if test="checkName!=null and checkName!=''">
+				and CHECKNAME like '%${checkName}%'
+			</if>
+				<if test="checkName!=null and checkName!=''">
+				and CHECKNAME like '%${checkName}%'
+			</if>
+				<if test="checkName!=null and checkName!=''">
+				and CHECKNAME like '%${checkName}%'
+			</if>
+			<if test="expiryData!=null and expiryData!=''">
+				and EXPIRYDATA like '%${expiryData}%'
+			</if>
+			<if test="isValid!=null and isValid!=''">
+				and ISVALID like '%${isValid}%'
+			</if>
+			<if test="validData!=null and validData!=''">
+				and VALIDDATA like '%${validData}%'
+			</if>
+		</where>
+		ORDER BY BASISCLASS
+	</select>
+	
+	
+
+	<select id="queryAllByproId" resultType="StaBas" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_STA_BAS
+		where 
+		PROID=#{proId,jdbcType=VARCHAR}
+	</select> 
+	
+	
+	
+	<select id="queryListPage" resultType="StaBas" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_STA_BAS
+		<where>
+			<if test="t.staId!=null and t.staId!=''">
+				STAID like '%${t.staId}%'
+			</if>
+			<if test="t.proId!=null and t.proId!=''">
+				and PROID like '%${t.proId}%'
+			</if>
+			<if test="t.proName!=null and t.proName!=''">
+				and PRONAME like '%${t.proName}%'
+			</if>
+			<if test="t.basisClass!=null and t.basisClass!=''">
+				and BASISCLASS like '%${t.basisClass}%'
+			</if>
+			<if test="t.baseFile!=null and t.baseFile!=''">
+				and BASEFILE like '%${t.baseFile}%'
+			</if>
+			<if test="t.casneg!=null and t.casneg!=''">
+				and CASNEG like '%${t.casneg}%'
+			</if>
+			<if test="t.createDate!=null and t.createDate!=''">
+				and CREATEDATE like '%${t.createDate}%'
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and STATE like '%${t.state}%'
+			</if>
+			<if test="t.checkDate!=null and t.checkDate!=''">
+				and CHECKDATE like '%${t.checkDate}%'
+			</if>
+			<if test="t.checkConent!=null and t.checkConent!=''">
+				and CHECKCONENT like '%${t.checkConent}%'
+			</if>
+			<if test="t.checkName!=null and t.checkName!=''">
+				and CHECKNAME like '%${t.checkName}%'
+			</if>
+				<if test="expiryData!=null and expiryData!=''">
+				and EXPIRYDATA like '%${expiryData}%'
+			</if>
+			<if test="isValid!=null and isValid!=''">
+				and ISVALID like '%${isValid}%'
+			</if>
+			<if test="valId!=null and Valid!=''">
+				and VALIDDATA like '%${validData}%'
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<delete id="deleteById" parameterType="java.lang.String" >
+		delete
+		from
+		ODS_STA_BAS
+		where
+		STAID = #{staId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="add" parameterType="StaBas" >
+		<!-- <selectKey keyProperty="staId" resultType="String" order="BEFORE">
+            select sys_guid() AS staId from dual
+        </selectKey> -->
+		INSERT INTO
+		ODS_STA_BAS (
+		STAID,
+		PROID,
+		PRONAME,
+		BASISCLASS,
+		BASEFILE,
+		CASNEG,
+		CREATEDATE,
+		STATE,
+		CHECKDATE,
+		CHECKCONENT,
+		CHECKNAME,
+		EXPIRYDATA,
+		ISVALID,
+		VALIDDATA
+		) VALUES (
+		#{staId, jdbcType=VARCHAR},
+		#{proId, jdbcType=VARCHAR},
+		#{proName, jdbcType=VARCHAR},
+		#{basisClass, jdbcType=VARCHAR},
+		#{baseFile, jdbcType=VARCHAR},
+		#{casneg, jdbcType=VARCHAR},
+		#{createDate, jdbcType=VARCHAR},
+		#{state, jdbcType=VARCHAR},
+		#{checkDate, jdbcType=VARCHAR},
+		#{checkConent, jdbcType=VARCHAR},
+		#{checkName, jdbcType=VARCHAR},
+		#{expiryData, jdbcType=VARCHAR},
+		#{isValid, jdbcType=VARCHAR},
+		#{validData, jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="update" parameterType="StaBas">
+		update
+		ODS_STA_BAS
+		SET
+		PROID = #{proId, jdbcType=VARCHAR},
+		PRONAME = #{proName, jdbcType=VARCHAR},
+		BASISCLASS = #{basisClass, jdbcType=VARCHAR},
+		BASEFILE = #{baseFile, jdbcType=VARCHAR},
+		CASNEG = #{casneg, jdbcType=VARCHAR},
+		CREATEDATE = #{createDate, jdbcType=VARCHAR},
+		STATE = #{state, jdbcType=VARCHAR},
+		CHECKDATE = #{checkDate, jdbcType=VARCHAR},
+		CHECKCONENT = #{checkConent, jdbcType=VARCHAR},
+		CHECKNAME = #{checkName, jdbcType=VARCHAR},
+		EXPIRYDATA=	#{expiryData, jdbcType=VARCHAR},
+		ISVALID=#{isValid, jdbcType=VARCHAR},
+		VALIDDATA=#{validData, jdbcType=VARCHAR}
+		WHERE
+		STAID = #{staId , jdbcType=VARCHAR}
+	</update>
+</mapper>

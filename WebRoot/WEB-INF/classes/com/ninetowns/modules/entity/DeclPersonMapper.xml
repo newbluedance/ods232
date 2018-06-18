@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DeclPerson">
+<sql id="Base_Column_List">
+        DECL_PERSON_CODE as declPersonCode,
+        ENT_REG_CODE as entRegCode,
+        DECL_PERSON_NAME as declPersonName,
+        SEX as sex,
+        ID_CARD_NO as id_Card_NO,
+        TELEPHONE as telPhone,
+        APPLY_DATE as applyDate,
+        TRAIN_DATE as trainDate,
+        PERMIT_DATE as permitDate,
+        VALID_PERIOD as validPeriod,
+        CHECK_CONCLUSION as checkConclusion,
+        AUTID_DATE as autidDate,
+        AUDIT_CONCLUSION as auditConclusion,
+        BLACKLIST_FLAG as blacklistFlag,
+        CLOSE_FLAG as closeFlag,
+        OPERATOR_CODE as operatorCode,
+        OPERATE_DATE as operateDate,
+        REMARK as remark,
+        OLD_PERSON_CODE as oldPersonCode,
+        ORG_CODE as orgCode,
+        TRANS_FLAG as transFlag,
+        PRE_FLAG as preFlag
+       
+
+</sql>
+    <!-- 分页查询 -->
+		<select id="queryListPage" resultType="DeclPerson" parameterType="java.util.HashMap">
+		SELECT
+			 DECL_PERSON_CODE as declPersonCode,
+        ENT_REG_CODE as entRegCode,
+        DECL_PERSON_NAME as declPersonName,
+        SEX as sex,
+        ID_CARD_NO as id_Card_NO,
+        TELEPHONE as telPhone,
+        APPLY_DATE as applyDate,
+        TRAIN_DATE as trainDate,
+        PERMIT_DATE as permitDate,
+        VALID_PERIOD as validPeriod,
+        CHECK_CONCLUSION as checkConclusion,
+        AUTID_DATE as autidDate,
+        AUDIT_CONCLUSION as auditConclusion,
+        BLACKLIST_FLAG as blacklistFlag,
+        CLOSE_FLAG as closeFlag,
+        OPERATOR_CODE as operatorCode,
+        OPERATE_DATE as operateDate,
+        REMARK as remark,
+        OLD_PERSON_CODE as oldPersonCode,
+        ORG_CODE as orgCode,
+        TRANS_FLAG as transFlag,
+        PRE_FLAG as preFlag
+	    FROM
+		T_DECL_PERSON
+		
+		<where>
+			<if test="t.entRegCode != null and t.entRegCode != ''">
+	                ENT_REG_CODE like '%${t.entRegCode}%'
+	        </if>
+		</where>
+		</select>
+		<select id="getById" resultType="DeclPerson">
+		select
+		<include refid="Base_Column_List"/>
+		from
+		T_DECL_PERSON
+		where
+		DECL_PERSON_CODE=#{declPersonCode,jdbcType=VARCHAR}
+		</select>
+</mapper>

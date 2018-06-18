@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="HisInfo" >
+	<sql id="Base_Column_List" >
+		HISID as hisId,
+		PROID as proId,
+		PRONAME as proName,
+		POSCLASS as posClass,
+		PHOTO as photo,
+		EXPLAINS as explains,
+		CASNEG as casneg,
+		CREATEDATE as createDate,
+		STATE as state,
+		CHECKDATE as checkDate,
+		CHECKCONENT as checkConent,
+		CHECKNAME as checkName
+	</sql>
+	<sql id="Base_Column_List_H" >
+		PROID as proId,
+		HSCODE as hsCode,
+		PRONAME as proName,
+		PROMNAME as promName,
+		CLASSID as classId,
+		MAKER as maker,
+		ADDRESS as address,
+		BRAND as brand,
+		CREATEDATE as createDate,
+		STATE as state,
+		CHECKDATE as checkDate,
+		CHECKCONENT as checkConent,
+		CHECKNAME as checkName,
+		STATEH as stateH,
+		CHECKDATEH as checkDateH,
+		CHECKCONENTH as checkConentH,
+		CHECKNAMEH as checkNameH,
+		STATES as stateS,
+		CHECKDATES as checkDateS,
+		CHECKCONENTS as checkConentS,
+		CHECKNAMES as checkNameS
+	</sql>
+	<select id="getById" resultType="HisInfo" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_HIS_INFO
+		where
+		HISID = #{hisId,jdbcType=VARCHAR}
+	</select>
+	<select id="queryAll" resultType="HisInfo" parameterType="HisInfo" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_HIS_INFO
+		<where>			
+			<if test="proId!=null and proId!=''">
+				and PROID like '%${proId}%'
+			</if>	
+		</where>
+		ORDER BY POSCLASS
+	</select>
+	<select id="queryAllByproId"  resultType="HisInfo" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_HIS_INFO
+		where
+		PROID = #{proId,jdbcType=VARCHAR}
+		ORDER BY POSCLASS DESC
+	</select>
+	<select id="queryListPage" resultType="HisInfo" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_HIS_INFO
+		<where>			
+			<if test="t.proId!=null and t.proId!=''">
+				and PROID like '%${t.proId}%'
+			</if>	
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<delete id="deleteById" parameterType="java.lang.String" >
+		delete
+		from
+		ODS_HIS_INFO
+		where
+		HISID = #{hisId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="add" parameterType="HisInfo" >
+		<!-- <selectKey keyProperty="hisId" resultType="String" order="BEFORE">
+            select sys_guid() AS hisId from dual
+        </selectKey> -->
+        
+		INSERT INTO
+		ODS_HIS_INFO (
+		HISID,
+		PROID,
+		PRONAME,
+		POSCLASS,
+		PHOTO,
+		EXPLAINS,
+		CASNEG,
+		CREATEDATE,
+		STATE,
+		CHECKDATE,
+		CHECKCONENT,
+		CHECKNAME
+		) VALUES (
+		#{hisId, jdbcType=VARCHAR},
+		#{proId, jdbcType=VARCHAR},
+		#{proName, jdbcType=VARCHAR},
+		#{posClass, jdbcType=VARCHAR},
+		#{photo, jdbcType=VARCHAR},
+		#{explains, jdbcType=VARCHAR},
+		#{casneg, jdbcType=VARCHAR},
+		#{createDate, jdbcType=VARCHAR},
+		#{state, jdbcType=VARCHAR},
+		#{checkDate, jdbcType=VARCHAR},
+		#{checkConent, jdbcType=VARCHAR},
+		#{checkName, jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="update" parameterType="HisInfo">
+		update
+		ODS_HIS_INFO
+		SET
+		POSCLASS = #{posClass, jdbcType=VARCHAR},
+		PHOTO = #{photo, jdbcType=VARCHAR},
+		EXPLAINS = #{explains, jdbcType=VARCHAR},
+		CASNEG = #{casneg, jdbcType=VARCHAR},
+		CREATEDATE = #{createDate, jdbcType=VARCHAR},
+		STATE = #{state, jdbcType=VARCHAR}
+		WHERE
+		HISID = #{hisId , jdbcType=VARCHAR}
+	</update>
+</mapper>

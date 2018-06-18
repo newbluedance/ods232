@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="ClassField" >
+	<sql id="Base_Column_List" >
+		CFID as cfId,
+		CLASSID as classId,
+		FIELDKEY as fieldKey,
+		CREATETIME as createTime,
+		CREATEUSER as createUser,
+		MODIFYTIME as modifyTime,
+		MODIFYUSER as modifyUser,
+		STATE as state,
+		TABID as tabId
+	</sql>
+	<select id="getById" resultType="ClassField" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_CLASS_FIELD
+		where
+		CFID = #{cfId,jdbcType=VARCHAR}
+	</select>
+	<select id="queryAll" resultType="ClassField" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_CLASS_FIELD
+		<where>
+			<if test="cfId!=null and cfId!=''">
+				CFID like '%${cfId}%'
+			</if>
+			<if test="classId!=null and classId!='' and classIds=null and classIds=''">
+				and CLASSID like '%${classId}%'
+			</if>
+			<if test="fieldKey!=null and fieldKey!=''">
+				and FIELDKEY like '%${fieldKey}%'
+			</if>
+			<if test="tabId!=null and tabId!=''">
+				and TABID like '%${tabId}%'
+			</if>
+			<if test="classIds!=null and classIds!=''">
+				and CLASSID in 
+			 	<foreach item="classIds" index="index" collection="classIds" open="(" separator="," close=")">
+				#{classIds}
+				</foreach> 
+			</if>
+		</where>
+	</select>
+	<select id="queryListPage" resultType="ClassField" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_CLASS_FIELD
+		<where>
+			<if test="t.cfId!=null and t.cfId!=''">
+				CFID like '%${t.cfId}%'
+			</if>
+			<if test="t.classId!=null and t.classId!=''">
+				and CLASSID like '%${t.classId}%'
+			</if>
+			<if test="t.fieldKey!=null and t.fieldKey!=''">
+				and FIELDKEY like '%${t.fieldKey}%'
+			</if>
+			<if test="t.createTime!=null and t.createTime!=''">
+				and CREATETIME like '%${t.createTime}%'
+			</if>
+			<if test="t.createUser!=null and t.createUser!=''">
+				and CREATEUSER like '%${t.createUser}%'
+			</if>
+			<if test="t.modifyTime!=null and t.modifyTime!=''">
+				and MODIFYTIME like '%${t.modifyTime}%'
+			</if>
+			<if test="t.modifyUser!=null and t.modifyUser!=''">
+				and MODIFYUSER like '%${t.modifyUser}%'
+			</if>
+			<if test="t.state!=null and t.state!=''">
+				and STATE like '%${t.state}%'
+			</if>
+			<if test="tabId!=null and tabId!=''">
+				and TABID like '%${tabId}%'
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<delete id="deleteById" parameterType="java.lang.String" >
+		delete
+		from
+		ODS_CLASS_FIELD
+		where
+		CFID = #{cfId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="add" parameterType="ClassField" >
+		INSERT INTO
+		ODS_CLASS_FIELD (
+		CLASSID,
+		FIELDKEY,
+		CREATETIME,
+		CREATEUSER,
+		MODIFYTIME,
+		MODIFYUSER,
+		STATE,
+		TABID
+		) VALUES (
+		#{classId, jdbcType=VARCHAR},
+		#{fieldKey, jdbcType=VARCHAR},
+		#{createTime, jdbcType=VARCHAR},
+		#{createUser, jdbcType=VARCHAR},
+		#{modifyTime, jdbcType=VARCHAR},
+		#{modifyUser, jdbcType=VARCHAR},
+		#{state, jdbcType=VARCHAR},
+		#{tabId, jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="update" parameterType="ClassField">
+		update
+		ODS_CLASS_FIELD
+		SET
+		CLASSID = #{classId, jdbcType=VARCHAR},
+		FIELDKEY = #{fieldKey, jdbcType=VARCHAR},
+		CREATETIME = #{createTime, jdbcType=VARCHAR},
+		CREATEUSER = #{createUser, jdbcType=VARCHAR},
+		MODIFYTIME = #{modifyTime, jdbcType=VARCHAR},
+		MODIFYUSER = #{modifyUser, jdbcType=VARCHAR},
+		STATE = #{state, jdbcType=VARCHAR},
+		TABID = #{tabId, jdbcType=VARCHAR}
+		WHERE
+		CFID = #{cfId , jdbcType=VARCHAR}
+	</update>
+</mapper>

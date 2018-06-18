@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Expects" >
+	<sql id="Base_Column_List" >
+		EXID as exId,
+		EXPECTNAME as expectName,
+		PHONE as phone,
+		DEPT as dept
+	</sql>
+	<select id="getById" resultType="Expects" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_EXPECTS
+		where
+		EXID = #{exId,jdbcType=VARCHAR}
+	</select>
+	<select id="queryAll" resultType="Expects" parameterType="java.lang.String" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_EXPECTS
+	</select>
+	<select id="queryListPage" resultType="Expects" parameterType="java.util.HashMap" >
+		select
+		<include refid="Base_Column_List" />
+		from
+		ODS_EXPECTS
+		<where>
+			<if test="t.exId!=null and t.exId!=''">
+				EXID like '%${t.exId}%'
+			</if>
+			<if test="t.expectName!=null and t.expectName!=''">
+				and EXPECTNAME like '%${t.expectName}%'
+			</if>
+			<if test="t.phone!=null and t.phone!=''">
+				and PHONE like '%${t.phone}%'
+			</if>
+			<if test="t.dept!=null and t.dept!=''">
+				and DEPT like '%${t.dept}%'
+			</if>
+		</where>
+		<if test="paging.sort != null and paging.sort != ''">
+			ORDER BY ${paging.sort}
+		</if>
+		<if test="paging.direction != null and paging.direction != ''">
+			${paging.direction}
+		</if>
+	</select>
+	<delete id="deleteById" parameterType="java.lang.String" >
+		delete
+		from
+		ODS_EXPECTS
+		where
+		EXID = #{exId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="add" parameterType="Expects" >
+		<selectKey keyProperty="exId" resultType="String" order="BEFORE">
+            select sys_guid() AS exId from dual
+        </selectKey>
+		INSERT INTO
+		ODS_EXPECTS (
+		EXID,
+		EXPECTNAME,
+		PHONE,
+		DEPT
+		) VALUES (
+		#{exId, jdbcType=VARCHAR},
+		#{expectName, jdbcType=VARCHAR},
+		#{phone, jdbcType=VARCHAR},
+		#{dept, jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="update" parameterType="Expects">
+		update
+		ODS_EXPECTS
+		SET
+		EXPECTNAME = #{expectName, jdbcType=VARCHAR},
+		PHONE = #{phone, jdbcType=VARCHAR},
+		DEPT = #{dept, jdbcType=VARCHAR}
+		WHERE
+		EXID = #{exId , jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RoleMenu">
+    <sql id="Base_Column_List" >
+        F_MURL_ID as murlId ,
+        F_MENU_ID as menuId ,
+        F_ROLE_ID as roleId ,
+        F_DATA_UPD_TIME as dataUpdTime ,
+        F_DATA_UPD_USER as dataUpdUser ,
+        F_DATA_VALID_FLAG as dataValidFlag
+    </sql>
+
+    <select id="getById" resultType="RoleMenu" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_ROLE_MENU
+        where F_MURL_ID = #{murlId}
+    </select>
+
+    <select id="queryMenusByRoleId" resultType="java.lang.String" parameterType="java.lang.String" >
+        SELECT
+            PM.F_MENU_ID as menuId
+        FROM
+            T_PUB_ROLE_MENU PUR
+        LEFT JOIN T_PUB_MENU PM ON PUR.F_MENU_ID = PM.F_MENU_ID
+        WHERE
+            PUR.F_ROLE_ID = #{roleId}
+    </select>
+
+    <!--resultType="User" 每返回一条结果封装到User里 -->
+    <select id="queryListPage" resultType="RoleMenu" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_ROLE_MENU
+        <where>
+            <!--<if test="t.roleName != null and t.roleName != ''">
+                F_ROLE_NAME like '%${t.roleName}%'
+            </if>-->
+        </where>
+        <if test="paging.sort != null and paging.sort != ''">
+            ORDER BY ${paging.sort}
+        </if>
+        <if test="paging.direction != null and paging.direction != ''">
+            ${paging.direction}
+        </if>
+    </select>
+
+    <select id="queryAll" resultType="RoleMenu" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_ROLE_MENU
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from T_PUB_ROLE_MENU
+        where F_ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="add" parameterType="RoleMenu" >
+        <selectKey keyProperty="murlId" resultType="String" order="BEFORE">
+            select SEQ_ROLE_MENU.nextval AS murlId from dual
+        </selectKey>
+        INSERT INTO T_PUB_ROLE_MENU (
+        F_MURL_ID ,
+        F_MENU_ID ,
+        F_ROLE_ID ,
+        F_DATA_UPD_TIME ,
+        F_DATA_UPD_USER ,
+        F_DATA_VALID_FLAG
+        ) VALUES (
+        #{murlId, jdbcType=VARCHAR} ,
+        #{menuId, jdbcType=VARCHAR} ,
+        #{roleId, jdbcType=VARCHAR} ,
+        #{dataUpdTime, jdbcType=VARCHAR} ,
+        #{dataUpdUser, jdbcType=VARCHAR} ,
+        #{dataValidFlag, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="addRoleMenuBatch" parameterType="java.util.List">
+        insert into T_PUB_ROLE_MENU (
+            F_MURL_ID ,
+            F_MENU_ID ,
+            F_ROLE_ID ,
+            F_DATA_UPD_TIME ,
+            F_DATA_UPD_USER ,
+            F_DATA_VALID_FLAG
+        )
+        select SEQ_ROLE_MENU.nextval, A.* FROM (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            #{item.menuId, jdbcType=VARCHAR} ,
+            #{item.roleId, jdbcType=VARCHAR} ,
+            #{item.dataUpdTime, jdbcType=VARCHAR} ,
+            #{item.dataUpdUser, jdbcType=VARCHAR} ,
+            #{item.dataValidFlag, jdbcType=VARCHAR}
+            from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <update id="update" parameterType="RoleMenu">
+        update T_PUB_ROLE_MENU
+        SET
+	        F_MENU_ID = #{menuId, jdbcType=VARCHAR} ,
+	        F_ROLE_ID = #{roleId, jdbcType=VARCHAR} ,
+	        F_DATA_UPD_TIME = #{dataUpdTime, jdbcType=VARCHAR} ,
+	        F_DATA_UPD_USER = #{dataUpdUser, jdbcType=VARCHAR} ,
+	        F_DATA_VALID_FLAG = #{dataValidFlag, jdbcType=VARCHAR} ,
+        WHERE
+	        F_MURL_ID = #{murlId}
+    </update>
+
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Project">
+    <sql id="Base_Column_List" >
+        F_PROJECT_ID as projectId ,
+        F_PROJECT_NAME as projectName ,
+        F_SERVER_URL as serverUrl ,
+        F_IS_ACTIVE as isActive ,
+        F_SORT as sort
+    </sql>
+
+    <select id="getById" resultType="Project" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_PROJECT
+        where F_PROJECT_ID = #{projectId}
+    </select>
+
+    <!--resultType="User" 每返回一条结果封装到User里 -->
+    <select id="queryListPage" resultType="Project" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_PROJECT
+        <where>
+            <if test="t.projectName != null and t.projectName != ''">
+                F_PROJECT_NAME like '%${t.projectName}%'
+            </if>
+            <if test="t.isActive != null and t.isActive != ''">
+                and F_IS_ACTIVE like '%${t.isActive}%'
+            </if>
+        </where>
+        <if test="paging.sort != null and paging.sort != ''">
+            ORDER BY ${paging.sort}
+        </if>
+        <if test="paging.direction != null and paging.direction != ''">
+            ${paging.direction}
+        </if>
+    </select>
+
+    <select id="queryAll" resultType="Project" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_PROJECT
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from T_PUB_PROJECT
+        where F_PROJECT_ID = #{projectId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="add" parameterType="Project" >
+        <selectKey keyProperty="projectId" resultType="String" order="BEFORE">
+            select SEQ_PROJECT.nextval AS projectId from dual
+        </selectKey>
+        INSERT INTO T_PUB_PROJECT (
+        F_PROJECT_ID ,
+        F_PROJECT_NAME ,
+        F_SERVER_URL ,
+        F_IS_ACTIVE ,
+        F_SORT
+        ) VALUES (
+        #{projectId, jdbcType=VARCHAR},
+        #{projectName, jdbcType=VARCHAR},
+        #{serverUrl, jdbcType=VARCHAR},
+        #{isActive, jdbcType=VARCHAR},
+        #{sort, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="update" parameterType="Project">
+        update T_PUB_PROJECT
+        SET
+        F_PROJECT_NAME = #{projectName, jdbcType=VARCHAR},
+        F_SERVER_URL = #{serverUrl, jdbcType=VARCHAR},
+        F_IS_ACTIVE = #{isActive, jdbcType=VARCHAR},
+        F_SORT = #{sort#, jdbcType=VARCHAR}
+        WHERE
+	        F_PROJECT_ID = #{projectId}
+    </update>
+
+</mapper>

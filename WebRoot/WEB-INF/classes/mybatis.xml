@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+	<!-- 给实体Bean一个别名-->
+        <typeAlias type="com.ninetowns.modules.entity.Dept" alias="Dept" />
+        <typeAlias type="com.ninetowns.modules.entity.Menu" alias="Menu" />
+        <typeAlias type="com.ninetowns.modules.entity.Placard" alias="Placard" />
+        <typeAlias type="com.ninetowns.modules.entity.Project" alias="Project" />
+        <typeAlias type="com.ninetowns.modules.entity.Role" alias="Role" />
+        <typeAlias type="com.ninetowns.modules.entity.RoleMenu" alias="RoleMenu"/>
+        <typeAlias type="com.ninetowns.modules.entity.UploadFile" alias="UploadFile" />
+		<typeAlias type="com.ninetowns.modules.entity.User" alias="User" />
+        <typeAlias type="com.ninetowns.modules.entity.UserRole" alias="UserRole" />
+        <typeAlias type="com.ninetowns.utils.TreeNode" alias="TreeNode" />
+        
+        <typeAlias type="com.ninetowns.modules.entity.ProBacInfo" alias="ProBacInfo" />
+        <typeAlias type="com.ninetowns.modules.entity.HisInfo" alias="HisInfo" />
+        <typeAlias type="com.ninetowns.modules.entity.StaBas" alias="StaBas" />
+        <typeAlias type="com.ninetowns.modules.entity.ProClass" alias="ProClass" />
+        <typeAlias type="com.ninetowns.modules.entity.ExcField" alias="ExcField" />
+        <typeAlias type="com.ninetowns.modules.entity.ClassField" alias="ClassField" />
+        <typeAlias type="com.ninetowns.modules.entity.EntInfo" alias="EntInfo" />
+        <typeAlias type="com.ninetowns.modules.entity.DeclPerson" alias="DeclPerson" />
+        <typeAlias type="com.ninetowns.modules.entity.Expects" alias="Expects" />
+	</typeAliases>
+    <!--<mappers>
+        <mapper resource="com/ninetowns/modules/entity/UserMapper.xml"/>
+    </mappers>-->
+</configuration>

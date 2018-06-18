@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UploadFile">
+    <sql id="Base_Column_List" >
+        F_FILE_PATH_ID AS filePathId,
+        F_TAB_NAME AS tabName,
+        F_TAB_ID AS tabId,
+        F_TAB_FILE_NAME AS tabFileName,
+        F_FILE_TYPE AS fileType,
+        F_FILE_PATH AS filePath,
+        F_REMARK AS remark,
+        F_UPLOAD_USER AS uploadUser,
+        F_UPLOAD_DATE AS uploadDate,
+        F_DELETE_FLAG AS deleteFlag,
+        F_FILE_NAME AS fileName,
+        F_STATUS AS status
+  </sql>
+
+
+
+    <!--resultType="User" 每返回一条结果封装到User里 -->
+    <select id="queryListPage" resultType="UploadFile" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_FILE
+        <where>
+            <if test="t.filePathId != null and t.filePathId != ''">
+                and F_FILE_PATH_ID = #{t.filePathId}
+            </if>
+            <if test="t.tabName != null and t.tabName != ''">
+                and F_TAB_NAME = #{t.tabName}
+            </if>
+            <if test="t.tabId != null and t.tabId != ''">
+                and F_TAB_ID = #{t.tabId}
+            </if>
+            <if test="t.tabFileName != null and t.tabFileName != ''">
+                and F_TAB_FILE_NAME = #{t.tabFileName}
+            </if>
+            <if test="t.fileType != null and t.fileType != ''">
+                and F_FILE_TYPE = #{t.fileType}
+            </if>
+            <if test="t.filePath != null and t.filePath != ''">
+                and F_FILE_PATH = #{t.filePath}
+            </if>
+            <if test="t.remark != null and t.remark != ''">
+                and F_REMARK = #{t.remark}
+            </if>
+            <if test="t.uploadUser != null and t.uploadUser != ''">
+                and F_UPLOAD_USER = #{t.uploadUser}
+            </if>
+            <if test="t.uploadDate != null and t.uploadDate != ''">
+                and F_UPLOAD_DATE = #{t.uploadDate}
+            </if>
+            <if test="t.deleteFlag != null and t.deleteFlag != ''">
+                and F_DELETE_FLAG = #{t.deleteFlag}
+            </if>
+            <if test="t.fileName != null and t.fileName != ''">
+                and F_FILE_NAME like '%'||#{t.fileName}||'%'
+            </if>
+            <if test="t.status != null and t.status != ''">
+                and F_STATUS = #{t.status}
+            </if>
+        </where>
+        <if test="paging.sort != null and paging.sort != ''">
+            ORDER BY ${paging.sort}
+        </if>
+        <if test="paging.direction != null and paging.direction != ''">
+            ${paging.direction}
+        </if>
+    </select>
+
+
+    <select id="queryList" resultType="UploadFile" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_FILE
+        where
+        F_TAB_ID = #{id}
+    </select>
+
+    <!-- 总记录数 -->
+    <select id="count" parameterType="UploadFile" resultType="int">
+        select count(0) from T_PUB_FILE
+        <!--<where>-->
+            <!--<if test="t.name != null and t.name != ''">-->
+                <!--and F_NAME like '%${t.name}%'-->
+            <!--</if>-->
+        <!--</where>-->
+    </select>
+
+    <insert id="add" parameterType="UploadFile"   useGeneratedKeys="true" keyProperty="filePathId" keyColumn="F_FILE_PATH_ID">
+        insert into T_PUB_FILE (
+            F_TAB_NAME,
+            F_TAB_ID,
+            F_TAB_FILE_NAME,
+            F_FILE_TYPE,
+            F_FILE_PATH,
+            F_REMARK,
+            F_UPLOAD_USER,
+            F_UPLOAD_DATE,
+            F_DELETE_FLAG,
+            F_FILE_NAME,
+            F_STATUS
+        )
+        values (
+        #{tabName,jdbcType=VARCHAR},
+        #{tabId,jdbcType=VARCHAR},
+        #{tabFileName,jdbcType=VARCHAR},
+        #{fileType,jdbcType=VARCHAR},
+        #{filePath,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR},
+        #{uploadUser,jdbcType=VARCHAR},
+        #{uploadDate,jdbcType=VARCHAR},
+        #{deleteFlag,jdbcType=VARCHAR},
+        #{fileName,jdbcType=VARCHAR},
+        #{status,jdbcType=VARCHAR}
+       )
+      </insert>
+
+     <select id="getByIdLibs" resultType="UploadFile" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_FILE
+        where F_TAB_ID = #{tabId} and F_DELETE_FLAG = 'N'
+    </select>
+
+    <select id="getById" resultType="UploadFile" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_FILE
+        where F_FILE_PATH_ID = #{filePathId}
+    </select>
+
+    <update id="update" parameterType="UploadFile">
+        update T_PUB_FILE
+        set
+            F_TAB_NAME = #{tabName,jdbcType=VARCHAR},
+            F_TAB_ID = #{tabId,jdbcType=VARCHAR},
+            F_TAB_FILE_NAME = #{tabFileName,jdbcType=VARCHAR},
+            F_FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+            F_FILE_PATH = #{filePath,jdbcType=VARCHAR},
+            F_REMARK = #{remark,jdbcType=VARCHAR},
+            F_UPLOAD_USER = #{uploadUser,jdbcType=VARCHAR},
+            F_UPLOAD_DATE = #{uploadDate,jdbcType=VARCHAR},
+            F_DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR},
+            F_FILE_NAME = #{fileName,jdbcType=VARCHAR},
+            F_STATUS = #{status,jdbcType=VARCHAR}
+        where
+            F_FILE_PATH_ID = #{filePathId}
+    </update>
+
+    <update id="completion" parameterType="UploadFile">
+        update T_PUB_FILE
+        set
+            F_TAB_ID = #{tabId,jdbcType=VARCHAR}
+        where
+            F_FILE_PATH_ID = #{filePathId}
+    </update>
+
+    <select id="queryAll" resultType="UploadFile" parameterType="UploadFile">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_FILE
+        <where>
+            <if test="filePathId != null and filePathId != ''">
+                and F_FILE_PATH_ID = #{filePathId}
+            </if>
+            <if test="tabName != null and tabName != ''">
+                and F_TAB_NAME = #{tabName}
+            </if>
+            <if test="tabId != null and tabId != ''">
+                and F_TAB_ID = #{tabId}
+            </if>
+            <if test="tabFileName != null and tabFileName != ''">
+                and F_TAB_FILE_NAME = #{tabFileName}
+            </if>
+            <if test="fileType != null and fileType != ''">
+                and F_FILE_TYPE = #{fileType}
+            </if>
+            <if test="filePath != null and filePath != ''">
+                and F_FILE_PATH = #{filePath}
+            </if>
+            <if test="remark != null and remark != ''">
+                and F_REMARK = #{remark}
+            </if>
+            <if test="uploadUser != null and uploadUser != ''">
+                and F_UPLOAD_USER = #{uploadUser}
+            </if>
+            <if test="uploadDate != null and uploadDate != ''">
+                and F_UPLOAD_DATE = #{uploadDate}
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                and F_DELETE_FLAG = #{deleteFlag}
+            </if>
+            <if test="fileName != null and fileName != ''">
+                and F_FILE_NAME = #{fileName}
+            </if>
+            <if test="status != null and status != ''">
+                and F_STATUS = #{status}
+            </if>
+        </where>
+    </select>
+
+    <update id="cancellation" parameterType="UploadFile">
+        update T_PUB_FILE
+        set
+            F_DELETE_FLAG = 'Y'
+        <where>
+            <if test="filePathId != null and filePathId != ''">
+                and F_FILE_PATH_ID = #{filePathId}
+            </if>
+            <if test="tabName != null and tabName != ''">
+                and F_TAB_NAME = #{tabName}
+            </if>
+            <if test="tabId != null and tabId != ''">
+                and F_TAB_ID = #{tabId}
+            </if>
+            <if test="tabFileName != null and tabFileName != ''">
+                and F_TAB_FILE_NAME = #{tabFileName}
+            </if>
+            <if test="fileType != null and fileType != ''">
+                and F_FILE_TYPE = #{fileType}
+            </if>
+            <if test="filePath != null and filePath != ''">
+                and F_FILE_PATH = #{filePath}
+            </if>
+            <if test="remark != null and remark != ''">
+                and F_REMARK = #{remark}
+            </if>
+            <if test="uploadUser != null and uploadUser != ''">
+                and F_UPLOAD_USER = #{uploadUser}
+            </if>
+            <if test="uploadDate != null and uploadDate != ''">
+                and F_UPLOAD_DATE = #{uploadDate}
+            </if>
+            <if test="fileName != null and fileName != ''">
+                and F_FILE_NAME = #{fileName}
+            </if>
+            <if test="status != null and status != ''">
+                and F_STATUS = #{status}
+            </if>
+        </where>
+    </update>
+
+    <update id="deleteById" parameterType="java.lang.String">
+        delete from T_PUB_FILE
+        where
+            F_TAB_ID = #{tabId}
+    </update>
+    <update id="deleteByPathId" parameterType="java.lang.String">
+        delete from T_PUB_FILE
+        where
+            F_FILE_PATH_ID = #{filePathId}
+    </update>
+
+</mapper>

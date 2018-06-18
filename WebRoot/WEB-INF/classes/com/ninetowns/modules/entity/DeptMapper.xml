@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Dept">
+    <sql id="Base_Column_List_Tree" >
+        F_DEPT_ID as deptId ,
+        F_DEPT_CODE as id ,
+        F_DEPT_NAME as name ,
+        F_DEPT_PARENT_ID as parentId ,
+        F_DEPT_TYPE as menuType ,
+        F_SORT_INDEX as sort ,
+        F_ADDRESS as addr ,
+        F_ZIP_CODE as mailPath
+    </sql>
+
+    <sql id="Base_Column_List" >
+        F_DEPT_ID as deptId ,
+        F_DEPT_CODE as deptCode ,
+        F_DEPT_NAME as deptName ,
+        F_DEPT_PARENT_ID as deptParentId ,
+        F_DEPT_TYPE as deptType ,
+        F_SORT_INDEX as sortIndex ,
+        F_CRT_TIME as crtTime ,
+        F_CRT_USER as crtUser ,
+        F_DATA_UPD_TIME as dataUpdTime ,
+        F_DATA_UPD_USER as dataUpdUser ,
+        F_ADDRESS as address ,
+        F_ZIP_CODE as zipCode ,
+        F_DATA_VALID_FLAG as dataValidFlag
+    </sql>
+
+    <select id="queryDeptsByDeptCode" resultType="Dept" parameterType="java.lang.String" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM
+        T_PUB_DEPT START WITH F_DEPT_CODE = #{deptCode} CONNECT BY PRIOR F_DEPT_CODE = F_DEPT_PARENT_ID
+    </select>
+
+    <select id="getById" resultType="Dept" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_DEPT
+        where F_DEPT_ID = #{deptId}
+    </select>
+
+    <!--resultType="User" 每返回一条结果封装到User里 -->
+    <select id="queryListPage" resultType="Dept" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_DEPT
+        <where>
+            <if test="t.deptCode != null and t.deptCode != ''">
+                F_DEPT_CODE like '%${t.deptCode}%'
+            </if>
+            <if test="t.deptName != null and t.deptName != ''">
+                and F_DEPT_NAME like '%${t.deptName}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="getByPid" resultType="Dept" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_DEPT
+        where F_DEPT_PARENT_ID = #{deptParentId}
+    </select>
+
+    <select id="queryAll" resultType="Dept" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_DEPT
+    </select>
+
+    <select id="queryAllTree" resultType="TreeNode">
+        select
+        <include refid="Base_Column_List_Tree" />
+        from T_PUB_DEPT
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from T_PUB_DEPT
+        where F_DEPT_ID = #{deptId}
+    </delete>
+
+    <select id="queryDeptCode" resultType="int"  parameterType="java.lang.String" >
+        select count(*) from T_PUB_DEPT
+        where F_DEPT_CODE = #{deptCode}
+    </select>
+
+    <insert id="add" parameterType="Dept" useGeneratedKeys="true" keyProperty="deptId" keyColumn="F_DEPT_ID" >
+        INSERT INTO T_PUB_DEPT (
+        	F_DEPT_CODE ,
+        	F_DEPT_NAME ,
+        	F_DEPT_PARENT_ID ,
+        	F_DEPT_TYPE ,
+        	F_SORT_INDEX ,
+        	F_CRT_TIME ,
+        	F_CRT_USER ,
+        	F_DATA_UPD_TIME ,
+        	F_DATA_UPD_USER ,
+        	F_ADDRESS ,
+        	F_ZIP_CODE ,
+        	F_DATA_VALID_FLAG
+        ) VALUES (
+        	#{deptCode, jdbcType=VARCHAR},
+        	#{deptName, jdbcType=VARCHAR},
+        	#{deptParentId, jdbcType=VARCHAR},
+        	#{deptType, jdbcType=VARCHAR},
+        	#{sortIndex, jdbcType=VARCHAR},
+        	#{crtTime, jdbcType=VARCHAR},
+        	#{crtUser, jdbcType=VARCHAR},
+        	#{dataUpdTime, jdbcType=VARCHAR},
+        	#{dataUpdUser, jdbcType=VARCHAR},
+        	#{address, jdbcType=VARCHAR},
+        	#{zipCode, jdbcType=VARCHAR},
+        	#{dataValidFlag, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="queryDeptName" resultType="Dept" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_DEPT
+        where F_DEPT_NAME = #{deptName}
+    </select>
+    <select id="getMaxCount"  resultType="String" parameterType="java.lang.String" >
+        select F_DEPT_CODE  from T_PUB_DEPT
+        where F_DEPT_CODE=(select max(F_DEPT_CODE) from T_PUB_DEPT WHERE F_DEPT_CODE LIKE #{deptCode} )
+    </select>
+
+    <update id="update" parameterType="Dept" >
+        update T_PUB_DEPT
+        set
+        F_DEPT_CODE = #{deptCode, jdbcType=VARCHAR},
+        F_DEPT_NAME = #{deptName, jdbcType=VARCHAR},
+        F_DEPT_PARENT_ID = #{deptParentId, jdbcType=VARCHAR},
+        F_DEPT_TYPE = #{deptType, jdbcType=VARCHAR},
+        F_SORT_INDEX = #{sortIndex, jdbcType=VARCHAR},
+        F_CRT_TIME = #{crtTime, jdbcType=VARCHAR},
+        F_CRT_USER = #{crtUser, jdbcType=VARCHAR},
+        F_DATA_UPD_TIME = #{dataUpdTime, jdbcType=VARCHAR},
+        F_DATA_UPD_USER = #{dataUpdUser, jdbcType=VARCHAR},
+        F_ADDRESS = #{address, jdbcType=VARCHAR},
+        F_ZIP_CODE = #{zipCode, jdbcType=VARCHAR},
+        F_DATA_VALID_FLAG = #{dataValidFlag, jdbcType=VARCHAR}
+        where
+        F_DEPT_ID = #{deptId}
+    </update>
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Menu">
+    <sql id="Base_Column_List">
+        F_MENU_ID as menuId ,
+        F_MENU_NAME as menuName ,
+        F_MENU_PARENT_ID as menuParentId ,
+        F_MENU_URL as menuUrl ,
+        F_MENU_DESC as menuDesc ,
+        F_MENU_LEVEL as menuLevel ,
+        F_MENU_ORDER as menuOrder ,
+        F_PROJECT_ID as projectId ,
+        F_MENU_TARGET as menuTarget ,
+        F_MENU_ICON as menuIcon ,
+        F_CRT_TIME as crtTime ,
+        F_CRT_USER as crtUser ,
+        F_DATA_UPD_TIME as dataUpdTime ,
+        F_DATA_UPD_USER as dataUpdUser ,
+        F_DATA_VALID_FLAG as dataValidFlag
+    </sql>
+
+    <select id="getById" resultType="Menu" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from T_PUB_MENU
+        where F_MENU_ID = #{menuId}
+    </select>
+
+    <!--resultType="User" 每返回一条结果封装到User里 -->
+    <select id="queryListPage" resultType="Menu" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from T_PUB_MENU
+        <where>
+            <if test="t.deptCode != null and t.deptCode != ''">
+                F_MENU_NAME like '%${t.menuName}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="queryAll" resultType="Menu" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from T_PUB_MENU
+        ORDER BY F_MENU_ORDER
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        delete from T_PUB_MENU
+        where F_MENU_ID = #{menuId}
+    </delete>
+
+    <insert id="add" parameterType="Menu">
+        <selectKey keyProperty="menuId" resultType="String" order="BEFORE">
+            select SEQ_MENU.nextval AS menuId from dual
+        </selectKey>
+        INSERT INTO T_PUB_MENU (
+        F_MENU_ID ,
+        F_MENU_NAME ,
+        F_MENU_PARENT_ID ,
+        F_MENU_URL ,
+        F_MENU_DESC ,
+        F_MENU_LEVEL ,
+        F_MENU_ORDER ,
+        F_PROJECT_ID ,
+        F_MENU_TARGET ,
+        F_MENU_ICON ,
+        F_CRT_TIME ,
+        F_CRT_USER ,
+        F_DATA_UPD_TIME ,
+        F_DATA_UPD_USER ,
+        F_DATA_VALID_FLAG
+        ) VALUES (
+        #{menuId, jdbcType=NUMERIC} ,
+        #{menuName,jdbcType=VARCHAR} ,
+        #{menuParentId, jdbcType=NUMERIC} ,
+        #{menuUrl,jdbcType=VARCHAR} ,
+        #{menuDesc,jdbcType=VARCHAR} ,
+        #{menuLevel, jdbcType=NUMERIC} ,
+        #{menuOrder, jdbcType=NUMERIC} ,
+        #{projectId, jdbcType=NUMERIC} ,
+        #{menuTarget,jdbcType=VARCHAR} ,
+        #{menuIcon,jdbcType=VARCHAR} ,
+        #{crtTime,jdbcType=VARCHAR} ,
+        #{crtUser,jdbcType=VARCHAR} ,
+        #{dataUpdTime,jdbcType=VARCHAR} ,
+        #{dataUpdUser,jdbcType=VARCHAR} ,
+        #{dataValidFlag,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!-- 修改信息 -->
+    <update id="update" parameterType="Menu">
+        UPDATE T_PUB_MENU
+        SET
+        F_MENU_NAME = #{menuName,jdbcType=VARCHAR} ,
+        F_MENU_PARENT_ID = #{menuParentId,jdbcType=VARCHAR} ,
+        F_MENU_URL = #{menuUrl,jdbcType=VARCHAR} ,
+        F_MENU_DESC = #{menuDesc,jdbcType=VARCHAR} ,
+        F_MENU_LEVEL = #{menuLevel,jdbcType=VARCHAR} ,
+        F_MENU_ORDER = #{menuOrder,jdbcType=VARCHAR} ,
+        F_PROJECT_ID = #{projectId,jdbcType=VARCHAR} ,
+        F_MENU_TARGET = #{menuTarget,jdbcType=VARCHAR} ,
+        F_MENU_ICON = #{menuIcon,jdbcType=VARCHAR} ,
+        F_CRT_TIME = #{crtTime,jdbcType=VARCHAR} ,
+        F_CRT_USER = #{crtUser,jdbcType=VARCHAR} ,
+        F_DATA_UPD_TIME = #{dataUpdTime,jdbcType=VARCHAR} ,
+        F_DATA_UPD_USER = #{dataUpdUser,jdbcType=VARCHAR} ,
+        F_DATA_VALID_FLAG = #{dataValidFlag,jdbcType=VARCHAR}
+        WHERE
+        F_MENU_ID = #{menuId}
+    </update>
+
+</mapper>

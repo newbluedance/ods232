@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserRole">
+    <sql id="Base_Column_List" >
+        F_RELA_ID as relaId ,
+        F_USER_ID as userId ,
+        F_ROLE_ID as roleId ,
+        F_DATA_UPD_TIME as dataUpdTime ,
+        F_DATA_UPD_USER as dataUpdUser ,
+        F_DATA_VALID_FLAG as dataValidFlag
+    </sql>
+
+    <select id="getById" resultType="UserRole" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_USER_ROLE
+        where F_RELA_ID = #{relaId}
+    </select>
+
+    <select id="queryUsersByRoleId" resultType="User" parameterType="java.lang.String" >
+        SELECT
+            PU.F_USER_ID AS userId,
+            PU.F_DISPLAY_NAME AS displayName
+        FROM
+            T_PUB_USER_ROLE PUR
+            LEFT JOIN T_PUB_USER PU ON PUR.F_USER_ID = PU.F_USER_ID
+        WHERE
+            PUR.F_ROLE_ID= #{relaId}
+    </select>
+
+    <!--resultType="User" 每返回一条结果封装到User里 -->
+    <select id="queryListPage" resultType="UserRole" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_USER_ROLE
+        <where>
+            <!--<if test="t.roleName != null and t.roleName != ''">
+                F_ROLE_NAME like '%${t.roleName}%'
+            </if>-->
+        </where>
+        <if test="paging.sort != null and paging.sort != ''">
+            ORDER BY ${paging.sort}
+        </if>
+        <if test="paging.direction != null and paging.direction != ''">
+            ${paging.direction}
+        </if>
+    </select>
+
+    <select id="queryAll" resultType="UserRole" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from T_PUB_USER_ROLE
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from T_PUB_USER_ROLE
+        where F_ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="add" parameterType="UserRole" >
+        <selectKey keyProperty="relaId" resultType="String" order="BEFORE">
+            select SEQ_USER_ROLE.nextval AS relaId from dual
+        </selectKey>
+        INSERT INTO T_PUB_USER_ROLE (
+        F_RELA_ID ,
+        F_USER_ID ,
+        F_ROLE_ID ,
+        F_DATA_UPD_TIME ,
+        F_DATA_UPD_USER ,
+        F_DATA_VALID_FLAG
+        ) VALUES (
+        #{relaId, jdbcType=VARCHAR} ,
+        #{userId, jdbcType=VARCHAR} ,
+        #{roleId, jdbcType=VARCHAR} ,
+        #{dataUpdTime, jdbcType=VARCHAR} ,
+        #{dataUpdUser, jdbcType=VARCHAR} ,
+        #{dataValidFlag, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="addUserRoleBatch" parameterType="java.util.List">
+        insert into T_PUB_USER_ROLE (
+        F_RELA_ID ,
+        F_USER_ID ,
+        F_ROLE_ID ,
+        F_DATA_UPD_TIME ,
+        F_DATA_UPD_USER ,
+        F_DATA_VALID_FLAG
+        )
+        select SEQ_USER_ROLE.nextval, A.* FROM (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            #{item.userId, jdbcType=VARCHAR}, #{item.roleId, jdbcType=VARCHAR}, #{item.dataUpdTime, jdbcType=VARCHAR},
+            #{item.dataUpdUser, jdbcType=VARCHAR}, #{item.dataValidFlag, jdbcType=VARCHAR}
+            from dual
+        </foreach>
+        ) A
+    </insert>
+
+    <update id="update" parameterType="UserRole">
+        update T_PUB_USER_ROLE
+        SET
+	        F_USER_ID = #{userId, jdbcType=VARCHAR} ,
+	        F_ROLE_ID = #{roleId, jdbcType=VARCHAR} ,
+	        F_DATA_UPD_TIME = #{dataUpdTime, jdbcType=VARCHAR} ,
+	        F_DATA_UPD_USER = #{dataUpdUser, jdbcType=VARCHAR} ,
+	        F_DATA_VALID_FLAG = #{dataValidFlag, jdbcType=VARCHAR}
+        WHERE
+	        F_RELA_ID = #{relaId}
+    </update>
+
+</mapper>
